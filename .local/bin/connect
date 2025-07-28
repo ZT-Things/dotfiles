@@ -1,0 +1,20 @@
+#!/bin/bash
+
+TARGET="$1"
+
+if [ -z "$TARGET" ]; then
+    echo "Usage: connect <target>"
+    exit 1
+fi
+
+if [ "$TARGET" = "homewifi" ]; then
+    sudo iw wlp0s20f3 scan >/dev/null 2>&1
+    nmcli connection up my5gssid
+
+elif [ "$TARGET" = "school" ]; then
+    nmcli connection up SKR_Stuent
+
+else
+    echo "Unknown target: $TARGET"
+    exit 1
+fi

@@ -1,0 +1,78 @@
+#!/bin/bash
+
+WALLPAPER_DIR="$HOME/Pictures/wallpapers"
+STARTUP_NAME="startup"
+VALID_EXTS=("jpg" "jpeg" "png" "webp")
+
+find_wallpaper() {
+    local relpath="$1"
+    for ext in "${VALID_EXTS[@]}"; do
+        candidate="$WALLPAPER_DIR/$relpath.$ext"
+        if [[ -f "$candidate" ]]; then
+            echo "$candidate"
+            return
+        fi
+    done
+    return 1
+}
+
+# --list: List all wallpapers except ones named 'startup' (with or without subdirs)
+if [[ "$1" == "--list" ]]; then
+    while IFS= read -r -d '' file; do
+        relpath="${file#$WALLPAPER_DIR/}"
+        name="${relpath%.*}"
+        [[ "$(basename "$name")" == "$STARTUP_NAME" ]] && continue
+        echo "$name"
+    done < <(find "$WALLPAPER_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) -print0)
+    exit 0
+fi
+
+# --set-startup <name>: Copy image to startup.*
+if [[ "$1" == "--set-startup" ]]; then
+    if [[ -z "$2" ]]; then
+        echo "Usage: wallpaper --set-startup <name>"
+        exit 1
+    fi
+
+    src=$(find_wallpaper "$2")
+    if [[ -z "$src" ]]; then
+        echo "Wallpaper '$2' not found."
+        exit 1
+    fi
+
+    ext="${src##*.}"
+    cp "$src" "$WALLPAPER_DIR/$STARTUP_NAME.$ext"
+    echo "Startup wallpaper set to '$2'"
+    exit 0
+fi
+
+# --reload: Restart hyprpaper and apply startup wallpaper silently
+if [[ "$1" == "--reload" ]]; then
+    pkill hyprpaper
+    nohup hyprpaper &> /dev/null &
+    bash ~/.config/hypr/paper_startup.sh &> /dev/null &
+    disown
+    exit 0
+fi
+
+# Set wallpaper manually
+if [[ -n "$1" ]]; then
+    wp=$(find_wallpaper "$1")
+    if [[ -z "$wp" ]]; then
+        echo "Wallpaper '$1' not found."
+        exit 1
+    fi
+
+    for monitor in $(hyprctl monitors | awk '/Monitor/ {print $2}'); do
+        hyprctl hyprpaper wallpaper "$monitor,$wp"
+    done
+    exit 0
+fi
+
+# Help
+echo "Usage:"
+echo "  wallpaper <name>                 Set wallpaper by name (no extension needed, supports subdirectories)"
+echo "  wallpaper --list                 List available wallpapers (excludes 'startup')"
+echo "  wallpaper --set-startup <name>  Set a wallpaper as the startup one"
+echo "  wallpaper --reload              Restart hyprpaper and apply startup wallpaper silently"
+

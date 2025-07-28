@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Check if directory argument is provided
+if [ -z "$1" ]; then
+    echo "Usage: gallery <directory>"
+    exit 1
+fi
+
+DIR="$HOME/$1"
+
+# Check if directory exists
+if [ ! -d "$DIR" ]; then
+    echo "Directory '$DIR' does not exist."
+    exit 1
+fi
+
+# Run feh with options:
+# --zoom=fit : fit image to window
+# --info : show filename
+# --fullscreen : fullscreen mode
+feh --auto-zoom --scale-down --info "echo %n" "$DIR" & disown
