@@ -44,15 +44,15 @@ To use LINE Messenger on Arch Linux, follow these steps:
 4. **Fix Wayland Compatibility and Scaling**
    Edit Chrome’s `.desktop` file and replace the `Exec` line with:
 
- ```ini
-     Exec=/usr/bin/google-chrome-stable --ozone-platform=wayland --enable-features=UseOzonePlatform --force-device-scale-factor=1 %U
- ```
+```ini
+Exec=/usr/bin/google-chrome-stable --ozone-platform=wayland --enable-features=UseOzonePlatform --force-device-scale-factor=1 %U
+```
 
    You can do this in your local desktop entry:
 
- ```ini
-     ~/.local/share/applications/google-chrome.desktop
- ```
+```ini
+~/.local/share/applications/google-chrome.desktop
+```
 
 ---
 
@@ -61,7 +61,7 @@ To use LINE Messenger on Arch Linux, follow these steps:
 To run Vesktop with proper Wayland support and avoid graphical glitches or missing window decorations:
 
 ```ini
-    vesktop --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto & disown
+vesktop --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto & disown
 ```
 
 This ensures:
