@@ -563,6 +563,10 @@ Set this to true in `about:config`
 
 `zen.view.experimental-no-window-controls`
 
+Set this to false
+
+`zen.view.show-newtab-button-top`
+
 ---
 
 # Installing Oh My Zsh
@@ -844,5 +848,9 @@ Steam will update itself on first launch.
 ```bash
 sudo pacman -S lib32-alsa-plugins lib32-libpulse lib32-alsa-lib lib32-libgl lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader
 ```
+
+---
+
+# Enable numlock on startup
 
 ---
