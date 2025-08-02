@@ -299,7 +299,9 @@ vim /etc/locale.gen
 
 Uncomment your locale, e.g.:
 
+```ini
 #en_US.UTF-8 UTF-8
+```
 
 Generate locale:
 
@@ -457,11 +459,15 @@ sudo vim /etc/default/grub
 
 Change:
 
+```ini
 GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet"
+```
 
 to
 
+```ini
 GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet nvidia_drm.modeset=1"
+```
 
 Rebuild grub config:
 
