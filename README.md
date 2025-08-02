@@ -704,3 +704,84 @@ wallpaper
 ```
 
 ---
+
+# Setting up github SSH
+
+```bash
+sudo pacman -S openssh
+```
+
+### Step 1: Generate SSH key
+
+BASH
+ssh-keygen -t ed25519 -C "your_email@example.com"
+END
+
+When prompted:
+- Press Enter to accept the default file location (~/.ssh/id_ed25519)
+- Optionally, enter a secure passphrase or leave empty for no passphrase
+
+---
+
+### Step 2: Start the SSH agent and add your key
+
+BASH
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+END
+
+---
+
+### Step 3: Copy your public key to clipboard
+
+BASH
+wl-copy < ~/.ssh/id_ed25519.pub
+END
+
+If not, just display it and copy manually:
+
+BASH
+cat ~/.ssh/id_ed25519.pub
+END
+
+---
+
+### Step 4: Add the SSH public key to your Git provider
+
+- For GitHub: https://github.com/settings/keys
+- For GitLab: https://gitlab.com/-/profile/keys
+- For Bitbucket: https://bitbucket.org/account/settings/ssh-keys/
+
+Click "New SSH key" (or equivalent) and paste the copied key.
+
+---
+
+### Step 5: Test your SSH connection
+
+BASH
+ssh -T git@github.com
+END
+
+You should see a message like:
+
+> Hi username! You've successfully authenticated, but GitHub does not provide shell access.
+
+---
+
+# Step 6: Use SSH URL for your repositories
+
+Example:
+
+BASH
+git clone git@github.com:username/repository.git
+END
+
+---
+
+---
+
+# Installing steam
+
+
+
+---
