@@ -622,7 +622,7 @@ source ~/.zshrc
 sudo pacman -S neovim
 ```
 
-## Setting up MY config
+## Setting up MY neovim config
 
 ```bash
 git clone https://github.com/ZT-Things/neovim-config
@@ -681,13 +681,23 @@ Then save and exit.
 
 ---
 
-# My custom wallpaper manager
+# Initialize local bin
+
+```bash
+cp .local/bin ~/.local/bin
+```
+
+---
+
+## My custom wallpaper manager
 
 Initialize the wallpaper folder
 
 ```bash
 cp Pictures/wallpapers ~/Pictures/wallpapers -r
 ```
+
+And run:
 
 ```bash
 wallpaper
