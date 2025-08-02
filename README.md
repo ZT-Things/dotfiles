@@ -853,4 +853,16 @@ sudo pacman -S lib32-alsa-plugins lib32-libpulse lib32-alsa-lib lib32-libgl lib3
 
 # Enable numlock on startup
 
+```bash
+sudo vim /etc/ly/config.ini
+```
+
+Find the line:
+
+```ini
+numlock=false
+```
+
+Change it to true
+
 ---
