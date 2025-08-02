@@ -581,6 +581,13 @@ Then install oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
+Now install the required plugins
+
+```bash
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+```
+
 Now clone my `.zshrc` into `~/.zshrc`
 
 Then:
@@ -588,6 +595,7 @@ Then:
 ```bash
 source ~/.zshrc
 ```
+
 
 ---
 
@@ -616,5 +624,42 @@ Run this to initialize:
 ```bash
 nvim .
 ```
+
+---
+
+# Installing vencord
+
+```bash
+yay -S vencord-bin
+```
+
+Now run vencord with this
+
+```bash
+vesktop --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto & disown
+```
+
+OR
+
+Modify the Vesktop launcher to include hyprland launch flags
+
+```bash
+cp /usr/share/applications/vesktop.desktop ~/.local/share/applications/
+vim ~/.local/share/applications/vesktop.desktop
+```
+
+Find the `Exec=` line. It probably looks like:
+
+```ini
+Exec=vesktop %U
+```
+
+Change it to:
+
+```ini
+Exec=vesktop --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto %U
+```
+
+Then save and exit.
 
 ---
