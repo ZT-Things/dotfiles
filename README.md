@@ -74,6 +74,8 @@ This ensures:
 - Correct platform hint for better compatibility
 - The process runs in the background and doesn't block your terminal
 
+--
+
 # My Arch Dual Boot Process
 
 I won't be going into the extra process for laptop setups here because those are model specific. You can use this as a base and figure those out on your own.
@@ -95,9 +97,9 @@ I won't be going into the extra process for laptop setups here because those are
 
 Set font:
 
-BASH
+```bash
 setfont ter-132n
-END
+```
 
 ---
 
@@ -105,17 +107,17 @@ END
 
 Start iwctl:
 
-BASH
+```bash
 iwctl
-END
+```
 
 List devices and connect:
 
-BASH
+```bash
 device list
 station wlan0 get-networks
 station wlan0 connect SSID-NAME
-END
+```
 
 ---
 
@@ -123,13 +125,13 @@ END
 
 Create and edit config:
 
-BASH
+```bash
 sudo vim /var/lib/iwd/SSID_NAME.8021x
-END
+```
 
 Add these lines:
 
-INI
+```ini
 [Security]
 EAP-Method=PEAP
 EAP-Identity=your_username@example.com
@@ -137,28 +139,28 @@ EAP-PEAP-Phase2-Method=MSCHAPV2
 EAP-PEAP-Phase2-Identity=your_username@example.com
 EAP-PEAP-Phase2-Password=your_password
 AutoConnect=true
-END
+```
 
 Set permissions and restart:
 
-BASH
+```bash
 chmod 600 /var/lib/iwd/SSID_NAME.8021x
 systemctl restart iwd
 iwctl
 station wlan0 connect SSID_NAME
-END
+```
 
 ---
 
 ## Sync package database
 
-INI
+```ini
 pacman -Sy
-END
+```
 
-INI
+```ini
 pacman -S archlinux-keyring
-END
+```
 
 ---
 
@@ -166,15 +168,15 @@ END
 
 List devices:
 
-BASH
+```bash
 lsblk
-END
+```
 
 Open partition tool:
 
-BASH
+```bash
 cfdisk /dev/nvme0n1
-END
+```
 
 Create partitions:
 
@@ -194,26 +196,26 @@ Example partitions (change accordingly):
 
 ## Format partitions
 
-BASH
+```bash
 mkfs.fat -F32 /dev/nvme0n1p5
 mkfs.ext4 /dev/nvme0n1p6
 mkswap /dev/nvme0n1p7
 swapon /dev/nvme0n1p7
-END
+```
 
 Mount partitions:
 
-BASH
+```bash
 mount /dev/nvme0n1p6 /mnt
 mkdir /mnt/efi
 mount /dev/nvme0n1p5 /mnt/efi
-END
+```
 
 Check mountpoints:
 
-BASH
+```bash
 lsblk
-END
+```
 
 Make sure:
 - nvme0n1p5 mounted at `/mnt/efi`
@@ -226,43 +228,43 @@ Make sure:
 
 Replace `intel-ucode` with `amd-ucode` if you use AMD.
 
-BASH
+```bash
 pacstrap -K /mnt base base-devel linux linux-headers linux-firmware intel-ucode sudo git nano vim fastfetch htop make cmake curl wget bluez bluez-utils networkmanager cargo gcc mpv pipewire efibootmgr grub dosfstools mtools os-prober iw
-END
+```
 
 Generate fstab:
 
-BASH
+```bash
 genfstab -U /mnt >> /mnt/etc/fstab
 cat /mnt/etc/fstab
-END
+```
 
 Change root:
 
-BASH
+```bash
 arch-chroot /mnt
-END
+```
 
 Set root password:
 
-BASH
+```bash
 passwd
-END
+```
 
 Add user:
 
-BASH
+```bash
 useradd -m -g users -G wheel,storage,video,audio -s /bin/bash your-name
 passwd your-name
-END
+```
 
 ---
 
 ## Configure sudoers
 
-BASH
+```bash
 EDITOR=vim visudo
-END
+```
 
 Uncomment this line:
 
@@ -274,16 +276,16 @@ Uncomment this line:
 
 List timezones (use Tab for completion):
 
-BASH
+```bash
 ln -sf /usr/share/zoneinfo/
-END
+```
 
 Example:
 
-BASH
+```bash
 ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
 hwclock --systohc
-END
+```
 
 ---
 
@@ -291,9 +293,9 @@ END
 
 Edit locale.gen:
 
-BASH
+```bash
 vim /etc/locale.gen
-END
+```
 
 Uncomment your locale, e.g.:
 
@@ -301,16 +303,16 @@ Uncomment your locale, e.g.:
 
 Generate locale:
 
-BASH
+```bash
 locale-gen
-END
+```
 
 Set LANG:
 
-BASH
+```bash
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 cat /etc/locale.conf
-END
+```
 
 ---
 
@@ -318,21 +320,21 @@ END
 
 Set hostname (replace `arch`):
 
-BASH
+```bash
 echo "arch" >> /etc/hostname
-END
+```
 
 Edit hosts file:
 
-BASH
+```bash
 vim /etc/hosts
-END
+```
 
 Add this line (replace `arch`):
 
-INI
+```ini
 127.0.1.1       arch.localdomain        arch
-END
+```
 
 ---
 
@@ -340,43 +342,43 @@ END
 
 Mount Windows EFI (replace with your Windows EFI partition):
 
-BASH
+```bash
 mkdir /windows
 mount /dev/nvme0n1p1 /windows
-END
+```
 
 Edit GRUB defaults:
 
-BASH
+```bash
 vim /etc/default/grub
-END
+```
 
 - Increase `GRUB_TIMEOUT` to `30`
 - Uncomment `GRUB_DISABLE_OS_PROBER`
 
 Install GRUB:
 
-BASH
+```bash
 grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
 grub-mkconfig -o /boot/grub/grub.cfg
-END
+```
 
 ---
 
 ## Enable services
 
-BASH
+```bash
 systemctl enable bluetooth
 systemctl enable NetworkManager
-END
+```
 
 Exit chroot and unmount:
 
-BASH
+```bash
 exit
 umount -lR /mnt
 shutdown now
-END
+```
 
 Remove USB and boot into Arch.
 
@@ -388,9 +390,9 @@ If it boots Windows instead, go into boot manager and select GRUB or adjust boot
 
 Login and set font:
 
-BASH
+```bash
 setfont ter-132n
-END
+```
 
 ---
 
@@ -398,32 +400,32 @@ END
 
 List Wi-Fi networks:
 
-BASH
+```bash
 nmcli device wifi list
-END
+```
 
 
 Connect to Wi-Fi:
 
-BASH
+```bash
 sudo nmcli device wifi connect SSID-NAME password WIFI-PASSWORD
-END
+```
 
 ---
 
 If your Wi-Fi does not show but neighbors do, rescan:
 
-BASH
+```bash
 sudo iw wlp0s20f3 scan | grep "SSID"
 nmcli device wifi rescan
 nmcli device wifi list
-END
+```
 
 ---
 
 ### Enterprise Wi-Fi via nmcli
 
-BASH
+```bash
 sudo nmcli connection add type wifi \
   con-name MyEnterpriseWiFi \
   ifname wlp0s20f3 \
@@ -435,7 +437,7 @@ sudo nmcli connection add type wifi \
   802-1x.phase2-auth mschapv2 \
   802-1x.password-flags 0
 nmcli connection up MyEnterpriseWiFi
-END
+```
 
 ---
 
@@ -443,15 +445,15 @@ END
 
 (If using AMD or Intel GPU, follow their respective guides.)
 
-BASH
+```bash
 sudo pacman -S nvidia nvidia-utils nvidia-settings egl-wayland libva-nvidia-driver
-END
+```
 
 Edit grub:
 
-BASH
+```bash
 sudo vim /etc/default/grub
-END
+```
 
 Change:
 
@@ -463,104 +465,150 @@ GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet nvidia_drm.modeset=1"
 
 Rebuild grub config:
 
-BASH
+```bash
 sudo grub-mkconfig -o /boot/grub/grub.cfg
-END
+```
 
 ---
 
 ### Installing CUDA (optional)
 
-BASH
+```bash
 sudo pacman -S cuda cudnn nvidia-prime opencl-nvidia
-END
+```
 
 ---
 
 # Audio Setup with PipeWire
 
-BASH
+```bash
 sudo pacman -S pipewire pipewire-pulse wireplumber alsa-utils pavucontrol
 systemctl --user enable --now pipewire pipewire-pulse wireplumber
-END
+```
 
 ---
 
 # Installing Hyprland and essential apps
 
-INI
+```ini
 sudo pacman -S hyprland xdg-desktop-portal-hyprland xorg-server-xwayland \
 xdg-desktop-portal wl-clipboard qt5-wayland qt6-wayland waybar kitty \
 thunar wofi firefox grim slurp swappy brightnessctl pamixer pavucontrol ly less
-END
+```
 
 Enable ly (login manager):
 
-BASH
+```bash
 sudo systemctl enable ly.service
 sudo systemctl start ly
-END
+```
 
 ---
 
 # Additional utilities
 
-BASH
+```bash
 sudo pacman -S hyprlock hyprpaper hyprshot flatpak feh ffmpeg calcurse
 sudo pacman -S ttf-dejavu ttf-liberation noto-fonts noto-fonts-emoji noto-fonts-cjk
 sudo pacman -S ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-commonz
-END
+```
 
 ---
 
 # Dotfiles
 
-BASH
+```bash
 git clone https://github.com/ZT-Things/dotfiles
 cp -r dotfiles/.config ~/
-END
+```
 
 ---
 
 # Installing yay (AUR helper)
 
-BASH
+```bash
 git clone https://aur.archlinux.org/yay-bin.git
 cd yay-bin
 makepkg -si
-END
+```
 
 ---
 
 # Installing Zen Browser
 
-BASH
+```bash
 yay -S zen-browser-bin
-END
+```
 
 ---
 
 # Installing Oh My Zsh
 
-BASH
+Install zsh
+
+```bash
 sudo pacman -S zsh
 chsh -s $(which zsh)
-END
+```
 
 ---
 
 If you get an error about `/sbin/zsh` not listed in `/etc/shells`:
 
-BASH
+```bash
 sudo vim /etc/shells
 # Add this line at the end:
 /sbin/zsh
-END
+```
 
 Then:
 
-BASH
+```bash
 chsh -s /sbin/zsh
-END
+```
+
+---
+
+Then install oh-my-zsh
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+Now clone my `.zshrc` into `~/.zshrc`
+
+Then:
+
+```bash
+source ~/.zshrc
+```
+
+---
+
+# Installing Neovim
+
+```bash
+sudo pacman -S neovim
+```
+
+## Setting up MY config
+
+```bash
+git clone https://github.com/ZT-Things/neovim-config
+
+mv neovim-config ~/.config/nvim
+```
+
+Installing go and node for lsp, or change this in the lsp config:
+
+```bash
+sudo pacman -S go nodejs npm
+```
+
+Run this to initialize:
+
+```bash
+nvim .
+```
 
 ---
