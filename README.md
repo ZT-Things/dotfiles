@@ -498,12 +498,13 @@ systemctl --user enable --now pipewire pipewire-pulse wireplumber
 
 ---
 
-# Installing Hyprland and essential apps
+# Installing Hyprland and essential packages
 
 ```ini
 sudo pacman -S hyprland xdg-desktop-portal-hyprland xorg-server-xwayland \
 xdg-desktop-portal wl-clipboard qt5-wayland qt6-wayland waybar kitty \
-thunar wofi firefox grim slurp swappy brightnessctl pamixer pavucontrol ly less
+thunar wofi firefox grim slurp swappy brightnessctl pamixer pavucontrol ly less tmux \
+fzf mako
 ```
 
 Enable ly (login manager):
@@ -532,6 +533,12 @@ git clone https://github.com/ZT-Things/dotfiles
 cp -r dotfiles/.config ~/
 ```
 
+Create screenshots folder
+
+```bash
+mkdir ~/screenshots
+```
+
 ---
 
 # Installing yay (AUR helper)
@@ -549,6 +556,12 @@ makepkg -si
 ```bash
 yay -S zen-browser-bin
 ```
+
+Config
+
+Set this to true in `about:config`
+
+`zen.view.experimental-no-window-controls`
 
 ---
 
@@ -665,5 +678,19 @@ Exec=vesktop --enable-features=WaylandWindowDecorations --ozone-platform-hint=au
 ```
 
 Then save and exit.
+
+---
+
+# My custom wallpaper manager
+
+Initialize the wallpaper folder
+
+```bash
+cp Pictures/wallpapers ~/Pictures/wallpapers -r
+```
+
+```bash
+wallpaper
+```
 
 ---
