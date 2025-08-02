@@ -54,6 +54,10 @@ Exec=/usr/bin/google-chrome-stable --ozone-platform=wayland --enable-features=Us
 
    You can do this in your local desktop entry:
 
+```bash
+cp /usr/share/applications/google-chrome.desktop ~/.local/share/applications/
+```
+
 ```ini
 ~/.local/share/applications/google-chrome.desktop
 ```
