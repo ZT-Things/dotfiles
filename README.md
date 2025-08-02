@@ -713,9 +713,9 @@ sudo pacman -S openssh
 
 ### Step 1: Generate SSH key
 
-BASH
+```bash
 ssh-keygen -t ed25519 -C "your_email@example.com"
-END
+```
 
 When prompted:
 - Press Enter to accept the default file location (~/.ssh/id_ed25519)
@@ -725,24 +725,24 @@ When prompted:
 
 ### Step 2: Start the SSH agent and add your key
 
-BASH
+```bash
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
-END
+```
 
 ---
 
 ### Step 3: Copy your public key to clipboard
 
-BASH
+```bash
 wl-copy < ~/.ssh/id_ed25519.pub
-END
+```
 
 If not, just display it and copy manually:
 
-BASH
+```bash
 cat ~/.ssh/id_ed25519.pub
-END
+```
 
 ---
 
@@ -758,9 +758,9 @@ Click "New SSH key" (or equivalent) and paste the copied key.
 
 ### Step 5: Test your SSH connection
 
-BASH
+```bash
 ssh -T git@github.com
-END
+```
 
 You should see a message like:
 
@@ -772,9 +772,9 @@ You should see a message like:
 
 Example:
 
-BASH
+```bash
 git clone git@github.com:username/repository.git
-END
+```
 
 ---
 
@@ -782,6 +782,67 @@ END
 
 # Installing steam
 
+### Step 1: Enable multilib repository
 
+Open `/etc/pacman.conf` with your favorite editor:
+
+```bash
+sudo vim /etc/pacman.conf
+```
+
+Uncomment these lines by removing the `#`:
+
+INI
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+```
+
+---
+
+### Step 2: Update package database
+
+```bash
+sudo pacman -Sy
+```
+
+---
+
+### Step 3: Install Steam and dependencies
+
+```bash
+sudo pacman -S steam steam-native-runtime lib32-nvidia-utils lib32-mesa lib32-vulkan-radeon lib32-vulkan-intel
+```
+
+If you use Nvidia GPU, `lib32-nvidia-utils` is needed. For AMD or Intel, install appropriate `lib32` Vulkan packages.
+
+---
+
+### Step 4: Add your user to the `steam` group (optional but recommended)
+
+```bash
+sudo usermod -aG steam $USER
+```
+
+Log out and back in for group changes to apply.
+
+---
+
+### Step 5: Launch Steam
+
+Simply run:
+
+```bash
+steam
+```
+
+Steam will update itself on first launch.
+
+---
+
+### Optional: Install Steam Proton dependencies for better game compatibility
+
+```bash
+sudo pacman -S lib32-alsa-plugins lib32-libpulse lib32-alsa-lib lib32-libgl lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader
+```
 
 ---
