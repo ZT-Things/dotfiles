@@ -792,7 +792,7 @@ sudo vim /etc/pacman.conf
 
 Uncomment these lines by removing the `#`:
 
-INI
+```ini
 [multilib]
 Include = /etc/pacman.d/mirrorlist
 ```
