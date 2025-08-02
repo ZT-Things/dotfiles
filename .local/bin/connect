@@ -12,7 +12,7 @@ if [ "$TARGET" = "homewifi" ]; then
     nmcli connection up my5gssid
 
 elif [ "$TARGET" = "school" ]; then
-    nmcli connection up SKR_Stuent
+    nmcli connection up SKR_Student
 
 else
     echo "Unknown target: $TARGET"
