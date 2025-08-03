@@ -83,6 +83,7 @@ This ensures:
 # My Arch Dual Boot Process
 
 I won't be going into the extra process for laptop setups here because those are model specific. You can use this as a base and figure those out on your own.
+Keep in mind that this guide is mainly for myself.
 
 ---
 
@@ -447,7 +448,7 @@ nmcli connection up MyEnterpriseWiFi
 
 ---
 
-# Installing NVIDIA Drivers
+## Installing NVIDIA Drivers
 
 (If using AMD or Intel GPU, follow their respective guides.)
 
@@ -489,7 +490,7 @@ sudo pacman -S cuda cudnn nvidia-prime opencl-nvidia
 
 ---
 
-# Audio Setup with PipeWire
+## Audio Setup with PipeWire
 
 ```bash
 sudo pacman -S pipewire pipewire-pulse wireplumber alsa-utils pavucontrol
@@ -498,7 +499,7 @@ systemctl --user enable --now pipewire pipewire-pulse wireplumber
 
 ---
 
-# Installing Hyprland and essential packages
+## Installing Hyprland and essential packages
 
 ```ini
 sudo pacman -S hyprland xdg-desktop-portal-hyprland xorg-server-xwayland \
@@ -516,7 +517,7 @@ sudo systemctl start ly
 
 ---
 
-# Additional utilities
+## Additional utilities
 
 ```bash
 sudo pacman -S hyprlock hyprpaper hyprshot flatpak feh ffmpeg calcurse
@@ -526,7 +527,7 @@ sudo pacman -S ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-commonz
 
 ---
 
-# Dotfiles
+## Dotfiles
 
 ```bash
 git clone https://github.com/ZT-Things/dotfiles
@@ -541,7 +542,7 @@ mkdir ~/screenshots
 
 ---
 
-# Installing yay (AUR helper)
+## Installing yay (AUR helper)
 
 ```bash
 git clone https://aur.archlinux.org/yay-bin.git
@@ -551,7 +552,7 @@ makepkg -si
 
 ---
 
-# Installing Zen Browser
+## Installing Zen Browser
 
 ```bash
 yay -S zen-browser-bin
@@ -569,7 +570,7 @@ Set this to false
 
 ---
 
-# Installing Oh My Zsh
+## Installing Oh My Zsh
 
 Install zsh
 
@@ -620,7 +621,7 @@ source ~/.zshrc
 
 ---
 
-# Installing Neovim
+## Installing Neovim
 
 ```bash
 sudo pacman -S neovim
@@ -648,7 +649,7 @@ nvim .
 
 ---
 
-# Installing vencord
+## Installing vencord
 
 ```bash
 yay -S vencord-bin
@@ -685,7 +686,7 @@ Then save and exit.
 
 ---
 
-# Initialize local bin
+## Initialize local bin
 
 ```bash
 cp .local/bin ~/.local/bin
@@ -709,7 +710,7 @@ wallpaper
 
 ---
 
-# Setting up github SSH
+## Setting up github SSH
 
 ```bash
 sudo pacman -S openssh
@@ -772,7 +773,7 @@ You should see a message like:
 
 ---
 
-# Step 6: Use SSH URL for your repositories
+### Step 6: Use SSH URL for your repositories
 
 Example:
 
@@ -784,7 +785,7 @@ git clone git@github.com:username/repository.git
 
 ---
 
-# Installing steam
+## Installing steam
 
 ### Step 1: Enable multilib repository
 
@@ -851,11 +852,11 @@ sudo pacman -S lib32-alsa-plugins lib32-libpulse lib32-alsa-lib lib32-libgl lib3
 
 ---
 
-# ✅ Discord Screen Share on Arch Linux (Hyprland + Vesktop)
+## ✅ Discord Screen Share on Arch Linux (Hyprland + Vesktop)
 
 ---
 
-## Step 1: Install Required Dependencies
+### Step 1: Install Required Dependencies
 
 ```bash
 sudo pacman -S xdg-desktop-portal xdg-desktop-portal-hyprland pipewire wireplumber
@@ -870,7 +871,7 @@ systemctl --user enable --now wireplumber
 
 ---
 
-## Step 2: Configure `xdg-desktop-portal`
+### Step 2: Configure `xdg-desktop-portal`
 
 ```bash
 sudo vim /etc/xdg/xdg-desktop-portal/xdg-desktop-portal.conf
@@ -891,7 +892,7 @@ systemctl --user restart xdg-desktop-portal xdg-desktop-portal-hyprland
 
 ---
 
-## Step 3: Launch Vesktop with Wayland Support
+### Step 3: Launch Vesktop with Wayland Support
 
 Run Vesktop like this:
 
@@ -914,7 +915,7 @@ Exec=vesktop --enable-features=WaylandWindowDecorations --ozone-platform-hint=au
 
 ---
 
-## Step 4: Use Screen Share in Discord (Vesktop)
+### Step 4: Use Screen Share in Discord (Vesktop)
 
 1. Join a voice call
 2. Click **Share Your Screen**
@@ -923,7 +924,7 @@ Exec=vesktop --enable-features=WaylandWindowDecorations --ozone-platform-hint=au
 
 ---
 
-## 🔧 Troubleshooting
+### 🔧 Troubleshooting
 
 **Issue:** No windows/monitors show
 **Fix:** Restart portal services:
