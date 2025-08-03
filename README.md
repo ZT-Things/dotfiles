@@ -850,3 +850,86 @@ sudo pacman -S lib32-alsa-plugins lib32-libpulse lib32-alsa-lib lib32-libgl lib3
 ```
 
 ---
+
+# ✅ Discord Screen Share on Arch Linux (Hyprland + Vesktop)
+
+---
+
+## Step 1: Install Required Dependencies
+
+```bash
+sudo pacman -S xdg-desktop-portal xdg-desktop-portal-hyprland pipewire wireplumber
+sudo pacman -S xdg-desktop-portal-wlr xdg-desktop-portal-gtk
+```
+
+Enable WirePlumber (audio/session manager):
+
+```bash
+systemctl --user enable --now wireplumber
+```
+
+---
+
+## Step 2: Configure `xdg-desktop-portal`
+
+```bash
+sudo vim /etc/xdg/xdg-desktop-portal/xdg-desktop-portal.conf
+```
+
+Add or edit the following:
+
+```ini
+[preferred]
+default=hyprland
+```
+
+Then restart the portal services:
+
+```bash
+systemctl --user restart xdg-desktop-portal xdg-desktop-portal-hyprland
+```
+
+---
+
+## Step 3: Launch Vesktop with Wayland Support
+
+Run Vesktop like this:
+
+```bash
+vesktop --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto
+```
+
+To make it permanent via `.desktop` launcher:
+
+```bash
+cp /usr/share/applications/vesktop.desktop ~/.local/share/applications/
+vim ~/.local/share/applications/vesktop.desktop
+```
+
+Edit the `Exec` line:
+
+```ini
+Exec=vesktop --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto %U
+```
+
+---
+
+## Step 4: Use Screen Share in Discord (Vesktop)
+
+1. Join a voice call
+2. Click **Share Your Screen**
+3. Select a window or monitor (via portal)
+4. Done 🎉
+
+---
+
+## 🔧 Troubleshooting
+
+**Issue:** No windows/monitors show
+**Fix:** Restart portal services:
+
+```bash
+systemctl --user restart xdg-desktop-portal xdg-desktop-portal-hyprland
+```
+
+---
