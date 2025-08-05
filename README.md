@@ -504,8 +504,8 @@ systemctl --user enable --now pipewire pipewire-pulse wireplumber
 ```ini
 sudo pacman -S hyprland xdg-desktop-portal-hyprland xorg-server-xwayland \
 xdg-desktop-portal wl-clipboard qt5-wayland qt6-wayland waybar kitty \
-thunar wofi firefox grim slurp swappy brightnessctl pamixer pavucontrol ly less tmux \
-fzf mako
+thunar wofi grim slurp swappy brightnessctl pamixer pavucontrol ly less tmux \
+mako
 ```
 
 Enable ly (login manager):
@@ -521,8 +521,8 @@ sudo systemctl start ly
 
 ```bash
 sudo pacman -S hyprlock hyprpaper hyprshot flatpak feh ffmpeg calcurse
-sudo pacman -S ttf-dejavu ttf-liberation noto-fonts noto-fonts-emoji noto-fonts-cjk
-sudo pacman -S ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-commonz
+sudo pacman -S ttf-dejavu ttf-liberation noto-fonts noto-fonts-emoji noto-fonts-cjk ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common
+sudo pacman -S ripgrep fzf
 ```
 
 ---
