@@ -2,9 +2,9 @@
     "layer": "top",
     "position": "top",
     "reload_style_on_change": true,
-    "modules-left": ["custom/archlogo","custom/notification","clock","custom/pacman","tray"],
+    "modules-left": ["custom/archlogo","custom/notification", "clock", "pulseaudio","custom/brightness","custom/pacman","tray"],
     "modules-center": ["hyprland/workspaces"],
-    "modules-right": ["cpu", "memory", "temperature", "pulseaudio", "custom/brightness","bluetooth","network","battery"],
+    "modules-right": ["cpu", "memory", "custom/gpu", "bluetooth", "network", "battery"],
 
     "hyprland/workspaces": {
         "format": "{icon}",
@@ -97,16 +97,18 @@
     },
     "cpu": {
         "interval": 1,
-        "format": " {usage}%",
+        "format": " [{icon0}]",
+        "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
         "tooltip": true
     },
     "memory": {
-        "format": " {percentage}%",
+        "format": " {used:0.1f}G/{total:0.1f}G",
         "tooltip": true
     },
-    "temperature": {
-        "critical-threshold": 80,
-        "format": ""
+    "custom/gpu": {
+        "exec": "~/.config/waybar/scripts/gpu_temp.sh",
+        "interval": 10,
+        "format": "{}"
     },
     "tray": {
         "icon-size": 14,

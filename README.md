@@ -955,4 +955,19 @@ sudo pacman -S xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal
 flatpak install flathub org.vinegarhq.Vinegar
 ```
 
+```bash
+yay -S rojo-bin
+```
+
+In your roblox-projects directory
+```bash
+rojo init my-project
+```
+
+```bash
+rojo serve
+```
+
+Then go into roblox studio, click rojo and connect to the server
+
 ---
