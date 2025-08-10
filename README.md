@@ -15,71 +15,6 @@ This repository contains my personal configuration files for Arch Linux.
 
 ---
 
-## 🧠 Shell Setup: Using Oh My Zsh
-
-I use [**Oh My Zsh**](https://ohmyz.sh/) for managing my Zsh configuration.
-
-### 📦 Install:
-
-```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-```
-
-## 🟢 Using LINE Messenger on Linux (Arch)
-
-To use LINE Messenger on Arch Linux, follow these steps:
-
-1. **Install Google Chrome**
-   LINE’s extension only works in the official Google Chrome browser (not Chromium).
-
-   ```bash
-   yay -S google-chrome
-   ```
-
-2. **Install the LINE Extension**
-   - Visit: [LINE Chrome Web Store Page](https://chrome.google.com/webstore/detail/line/ophjlpahpchlmihnnnihgmmeilfjmjjc)
-   - Click **"Add to Chrome"**
-
-3. **Enable Dark Theme in Chrome**
-   - Open `chrome://flags` in the address bar
-   - Search for **"Force Dark Mode for Web Contents"**
-   - Enable it to apply a dark theme to LINE and all websites
-
-4. **Fix Wayland Compatibility and Scaling**
-   Edit Chrome’s `.desktop` file and replace the `Exec` line with:
-
-```ini
-Exec=/usr/bin/google-chrome-stable --ozone-platform=wayland --enable-features=UseOzonePlatform --force-device-scale-factor=1 %U
-```
-
-   You can do this in your local desktop entry:
-
-```bash
-cp /usr/share/applications/google-chrome.desktop ~/.local/share/applications/
-```
-
-```ini
-~/.local/share/applications/google-chrome.desktop
-```
-
----
-
-## 💬 Launching Vesktop with Wayland Support
-
-To run Vesktop with proper Wayland support and avoid graphical glitches or missing window decorations:
-
-```ini
-vesktop --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto & disown
-```
-
-This ensures:
-
-- Native window decorations on Wayland
-- Correct platform hint for better compatibility
-- The process runs in the background and doesn't block your terminal
-
---
-
 # My Arch Dual Boot Process
 
 I won't be going into the extra process for laptop setups here because those are model specific. You can use this as a base and figure those out on your own.
@@ -822,17 +757,7 @@ If you use Nvidia GPU, `lib32-nvidia-utils` is needed. For AMD or Intel, install
 
 ---
 
-### Step 4: Add your user to the `steam` group (optional but recommended)
-
-```bash
-sudo usermod -aG steam $USER
-```
-
-Log out and back in for group changes to apply.
-
----
-
-### Step 5: Launch Steam
+### Step 4: Launch Steam
 
 Simply run:
 
@@ -841,14 +766,6 @@ steam
 ```
 
 Steam will update itself on first launch.
-
----
-
-### Optional: Install Steam Proton dependencies for better game compatibility
-
-```bash
-sudo pacman -S lib32-alsa-plugins lib32-libpulse lib32-alsa-lib lib32-libgl lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader
-```
 
 ---
 
@@ -950,6 +867,45 @@ rm ~/.config/hypr/hyprland.conf
 dotfiles checkout
 
 dotfiles config --local status.showUntrackedFiles no
+```
+
+---
+
+## Using LINE Messenger on Linux (Arch)
+
+To use LINE Messenger on Arch Linux, follow these steps:
+
+1. **Install Google Chrome**
+   LINE’s extension only works in the official Google Chrome browser (not Chromium).
+
+   ```bash
+   yay -S google-chrome
+   ```
+
+2. **Install the LINE Extension**
+   - Visit: [LINE Chrome Web Store Page](https://chrome.google.com/webstore/detail/line/ophjlpahpchlmihnnnihgmmeilfjmjjc)
+   - Click **"Add to Chrome"**
+
+3. **Enable Dark Theme in Chrome**
+   - Open `chrome://flags` in the address bar
+   - Search for **"Force Dark Mode for Web Contents"**
+   - Enable it to apply a dark theme to LINE and all websites
+
+4. **Fix Wayland Compatibility and Scaling**
+   Edit Chrome’s `.desktop` file and replace the `Exec` line with:
+
+```ini
+Exec=/usr/bin/google-chrome-stable --ozone-platform=wayland --enable-features=UseOzonePlatform --force-device-scale-factor=1 %U
+```
+
+   You can do this in your local desktop entry:
+
+```bash
+cp /usr/share/applications/google-chrome.desktop ~/.local/share/applications/
+```
+
+```ini
+~/.local/share/applications/google-chrome.desktop
 ```
 
 ---
