@@ -330,6 +330,10 @@ If it boots Windows instead, go into boot manager and select GRUB or adjust boot
 
 # In Arch Linux
 
+This is for hyprland mainly.
+
+---
+
 Login and set font:
 
 ```bash
@@ -440,7 +444,7 @@ systemctl --user enable --now pipewire pipewire-pulse wireplumber
 sudo pacman -S hyprland xdg-desktop-portal-hyprland xorg-server-xwayland \
 xdg-desktop-portal wl-clipboard qt5-wayland qt6-wayland waybar kitty \
 thunar wofi grim slurp swappy brightnessctl pamixer pavucontrol ly less tmux \
-mako neovim
+mako neovim hyprshot hyprpicker
 ```
 
 Enable ly (login manager):
@@ -906,6 +910,23 @@ cp /usr/share/applications/google-chrome.desktop ~/.local/share/applications/
 
 ```ini
 ~/.local/share/applications/google-chrome.desktop
+```
+
+---
+
+## Disabling IPv6
+
+Add this to `/etc/sysctl.d/99-disable-ipv6.conf`
+
+```ini
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+```
+
+Then reload sysctl or reboot
+
+```bash
+sudo sysctl --system
 ```
 
 ---
