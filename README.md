@@ -398,7 +398,7 @@ If it boots Windows instead, go into boot manager and select GRUB or adjust boot
 Login and set font:
 
 ```bash
-setfont ter-132n
+setfont -d
 ```
 
 ---
@@ -505,7 +505,7 @@ systemctl --user enable --now pipewire pipewire-pulse wireplumber
 sudo pacman -S hyprland xdg-desktop-portal-hyprland xorg-server-xwayland \
 xdg-desktop-portal wl-clipboard qt5-wayland qt6-wayland waybar kitty \
 thunar wofi grim slurp swappy brightnessctl pamixer pavucontrol ly less tmux \
-mako
+mako neovim
 ```
 
 Enable ly (login manager):
@@ -931,6 +931,25 @@ Exec=vesktop --enable-features=WaylandWindowDecorations --ozone-platform-hint=au
 
 ```bash
 systemctl --user restart xdg-desktop-portal xdg-desktop-portal-hyprland
+```
+
+---
+
+## Clone bare repository
+
+```bash
+git clone --bare https://github.com/ZT-Things/dotfiles $HOME/.dotfiles
+```
+
+```ini
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+```
+
+```bash
+rm ~/.config/hypr/hyprland.conf
+dotfiles checkout
+
+dotfiles config --local status.showUntrackedFiles no
 ```
 
 ---
