@@ -7,12 +7,15 @@ if [ -z "$TARGET" ]; then
     exit 1
 fi
 
-if [ "$TARGET" = "homewifi" ]; then
+if [ "$TARGET" = "home" ]; then
     sudo iw wlp0s20f3 scan >/dev/null 2>&1
     nmcli connection up my5gssid
 
 elif [ "$TARGET" = "school" ]; then
     nmcli connection up SKR_Student
+
+elif [ "$TARGET" = "teacher" ]; then
+    nmcli connection up SKR_Teacher
 
 else
     echo "Unknown target: $TARGET"
