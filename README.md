@@ -930,3 +930,29 @@ sudo sysctl --system
 ```
 
 ---
+
+## Installing man pages
+
+```bash
+sudo pacman -S man man-db man-pages
+```
+
+---
+
+## Roblox
+
+```bash
+flatpak install flathub org.vinegarhq.Sober
+```
+
+## Roblox studio with rojo
+
+```bash
+sudo pacman -S xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-desktop-portal-wlr
+```
+
+```bash
+flatpak install flathub org.vinegarhq.Vinegar
+```
+
+---
