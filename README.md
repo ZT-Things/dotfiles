@@ -971,3 +971,36 @@ rojo serve
 Then go into roblox studio, click rojo and connect to the server
 
 ---
+
+## Setting up music player
+
+```bash
+sudo pacman -S mpd mpc ncmpcpp mpdscribble mpv yt-dlp fzf
+```
+
+```bash
+mkdir -p ~/.config/mpd ~/.local/share/mpd/playlists ~/.cache/mpd ~/Music
+```
+
+```bash
+systemctl --user enable mpd
+systemctl --user start mpd
+```
+
+### Configure Last.fm to track playtime
+```bash
+sudo vim /etc/.mpdscribble.cfg
+```
+
+```ini
+username = YOUR_LASTFM_USERNAME
+password = YOUR_LASTFM_PASSWORD
+host = 127.0.0.1
+port = 6600
+```
+
+```bash
+systemctl --user enable --now mpdscribble
+```
+
+---

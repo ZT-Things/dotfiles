@@ -1,0 +1,3 @@
+mpd_music_dir = "~/Music"
+
+#allow_for_physical_item_deletion = true

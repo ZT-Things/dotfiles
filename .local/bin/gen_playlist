@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Variables
+PLAYLIST_URL=$(head -n 1 ~/playlist_url)# # Replace this with your YouTube playlist
+#PLAYLIST_URL="https://www.youtube.com/playlist?list=xxxxxxxxxx"
+
+START=1
+END=200  # Replace with the number of top songs you want
+MUSIC_DIR="$HOME/Music"
+MPD_PLAYLIST="My Playlist"
+ARCHIVE_FILE="$MUSIC_DIR/downloaded.txt"
+
+# -------------------------------
+# CREATE MUSIC DIRECTORY IF MISSING
+# -------------------------------
+mkdir -p "$MUSIC_DIR"
+
+# -------------------------------
+# DOWNLOAD TOP X SONGS
+# -------------------------------
+yt-dlp --extract-audio --audio-format mp3 --audio-quality 0 \
+    --download-archive "$ARCHIVE_FILE" \
+    --output "$MUSIC_DIR/%(playlist_index)03d - %(title)s.%(ext)s" \
+    --playlist-start $START --playlist-end $END \
+    "$PLAYLIST_URL"
+
+# -------------------------------
+# CONVERT TO MP3 IF NECESSARY
+# -------------------------------
+for file in "$MUSIC_DIR"/*; do
+    ext="${file##*.}"
+    if [[ "$ext" != "mp3" ]]; then
+        ffmpeg -i "$file" -vn -acodec libmp3lame -aq 2 "${file%.*}.mp3"
+        rm "$file"
+    fi
+done
+
+# -------------------------------
+# UPDATE MPD DATABASE
+# -------------------------------
+mpc update
+
+# -------------------------------
+# ADD SONGS TO MPD PLAYLIST IN ORDER
+# -------------------------------
+for file in "$MUSIC_DIR"/[0-9][0-9][0-9]*.mp3; do
+    mpc add "$file"
+done
+
+# -------------------------------
+# SAVE PLAYLIST
+# -------------------------------
+mpc save "$MPD_PLAYLIST"
+
+echo "✅ Playlist '$MPD_PLAYLIST' updated with top $END songs from YouTube playlist."
+

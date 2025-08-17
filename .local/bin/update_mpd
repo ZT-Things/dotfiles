@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Variables
+MUSIC_DIR="$HOME/Music"
+MPD_PLAYLIST="My Playlist"
+
+# -------------------------------
+# UPDATE MPD DATABASE
+# -------------------------------
+mpc update
+
+# -------------------------------
+# ADD SONGS TO MPD PLAYLIST IN ORDER
+# -------------------------------
+mpc clear
+for file in "$MUSIC_DIR"/[0-9][0-9][0-9]*.mp3; do
+    mpc add "$(basename "$file")"
+done
+
+# -------------------------------
+# SAVE PLAYLIST
+# -------------------------------
+mpc save "$MPD_PLAYLIST"
+
+echo "✅ Playlist '$MPD_PLAYLIST' updated."
