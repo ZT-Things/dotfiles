@@ -987,20 +987,66 @@ systemctl --user enable mpd
 systemctl --user start mpd
 ```
 
-### Configure Last.fm to track playtime
+---
+
+## Setting up ssh
+
 ```bash
-sudo vim /etc/.mpdscribble.cfg
+sudo pacman -S openssh
+sudo systemctl enable --now sshd
 ```
+
+Edit this `sudo nano /etc/ssh/sshd_config`
 
 ```ini
-username = YOUR_LASTFM_USERNAME
-password = YOUR_LASTFM_PASSWORD
-host = 127.0.0.1
-port = 6600
+PermitRootLogin no
+PasswordAuthentication yes   # or "no" if using only keys
+Port 22                      # can change to 2222 for security
+```
+
+Then restart
+
+```bash
+sudo systemctl restart sshd
+```
+
+---
+
+## Setting up blackarch
+
+```bash
+curl -O https://blackarch.org/strap.sh
+
+sha1sum strap.sh
+# Should match the SHA1 on https://blackarch.org/downloads.html#install-repo
+
+chmod +x strap.sh
+
+sudo ./strap.sh
 ```
 
 ```bash
-systemctl --user enable --now mpdscribble
+sudo pacman -Syu
+```
+
+---
+
+## Using custom quickshare script
+
+Script for sharing files with other device quickly either locally or through ngrok
+
+You'll need blackarch for this
+
+```bash
+sudo pacman -S python-pyngrok
+```
+
+Head to `https://dashboard.ngrok.com/get-started/your-authtoken`
+
+Find your auth token
+
+```bash
+ngrok config add-authtoken YOUR_AUTH_TOKEN
 ```
 
 ---
