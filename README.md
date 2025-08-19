@@ -773,7 +773,7 @@ Steam will update itself on first launch.
 
 ---
 
-## ✅ Discord Screen Share on Arch Linux (Hyprland + Vesktop)
+## Discord Screen Share on Arch Linux (Hyprland + Vesktop)
 
 ---
 
@@ -841,11 +841,11 @@ Exec=vesktop --enable-features=WaylandWindowDecorations --ozone-platform-hint=au
 1. Join a voice call
 2. Click **Share Your Screen**
 3. Select a window or monitor (via portal)
-4. Done 🎉
+4. Done
 
 ---
 
-### 🔧 Troubleshooting
+### Troubleshooting
 
 **Issue:** No windows/monitors show
 **Fix:** Restart portal services:
@@ -996,7 +996,7 @@ sudo pacman -S openssh
 sudo systemctl enable --now sshd
 ```
 
-Edit this `sudo nano /etc/ssh/sshd_config`
+Edit this `sudo vim /etc/ssh/sshd_config`
 
 ```ini
 PermitRootLogin no
@@ -1014,6 +1014,8 @@ sudo systemctl restart sshd
 
 ## Setting up blackarch
 
+The BlackArch database provides a repository of security and hacking tools that can be installed via `pacman`
+
 ```bash
 curl -O https://blackarch.org/strap.sh
 
@@ -1024,6 +1026,8 @@ chmod +x strap.sh
 
 sudo ./strap.sh
 ```
+
+You can cancel the installation if you only want the database
 
 ```bash
 sudo pacman -Syu
@@ -1047,6 +1051,91 @@ Find your auth token
 
 ```bash
 ngrok config add-authtoken YOUR_AUTH_TOKEN
+```
+
+---
+
+## Setting up telegram bot to notify your local ip on startup
+
+### Initialization
+
+Initialize script folder
+```bash
+cp ~/dotfiles/scripts ~/scripts
+```
+
+```bash
+mv ~/dotfiles/scripts/sendip
+vim .env
+```
+
+In here add your BOT_TOKEN and CHAT_ID
+
+```ini
+BOT_TOKEN=123456789:ABCDefGHIjkLMnoPQRstUVwxyZ
+CHAT_ID=123456789
+```
+
+### Getting BOT_TOKEN and CHAT_ID
+
+Getting BOT_TOKEN
+
+1. Open Telegram and search for BotFather
+
+2. Start a chat with BotFather and send: `/newbot`
+
+3. Give your bot a username ending with bot (e.g., MyIPBot).
+
+4. BotFather will reply with a bot token, which looks like: `123456789:ABCDefGHIjkLMnoPQRstUVwxyZ`
+
+Getting CHAT_ID
+
+1. Start a chat with your bot, and send it a message
+
+2. Open a browser and visit `https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates`
+  For example https://api.telegram.org/bot<123456789:ABCDefGHIjkLMnoPQRstUVwxyZ>/getUpdates
+
+3. Look for "id" in "chat" and that is your CHAT_ID
+
+### Setting the script up
+
+Run script on startup
+```bash
+mkdir -p ~/.config/systemd/user
+vim ~/.config/systemd/user/ip_monitor.service
+```
+
+Make sure to change HOST-NAME to your hostname
+```ini
+[Unit]
+Description=IP Monitor Telegram Notification
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/HOST-NAME/scripts/sendip/main.py
+Restart=on-failure
+Environment=PYTHONUNBUFFERED=1
+WorkingDirectory=/home/HOST-NAME/scripts/sendip/
+
+[Install]
+WantedBy=default.target
+```
+
+```bash
+systemctl --user daemon-reload
+systemctl --user enable ip_monitor.service
+systemctl --user start ip_monitor.service
+```
+
+Check status and make sure it's running
+```bash
+systemctl --user status ip_monitor.service
+```
+
+To restart
+```bash
+systemctl --user restart ip_monitor.service
 ```
 
 ---
