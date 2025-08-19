@@ -2,9 +2,9 @@
     "layer": "top",
     "position": "top",
     "reload_style_on_change": true,
-    "modules-left": ["custom/archlogo","custom/notification", "clock", "pulseaudio","custom/brightness","custom/pacman","tray"],
+    "modules-left": ["custom/archlogo","custom/notification", "clock", "cpu", "memory", "custom/gpu", "custom/pacman", "tray"],
     "modules-center": ["hyprland/workspaces"],
-    "modules-right": ["cpu", "memory", "custom/gpu", "bluetooth", "network", "battery"],
+    "modules-right": ["pulseaudio","custom/brightness", "bluetooth", "network", "battery"],
 
     "hyprland/workspaces": {
         "format": "{icon}",

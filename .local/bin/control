@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# control script for Hyprland
+
+if [ "$1" = "lock" ]; then
+    nohup env XDG_RUNTIME_DIR=/run/user/1000 WAYLAND_DISPLAY=wayland-1 hyprlock >/dev/null 2>&1 &
+    echo "Hyprland screen locked."
+else
+    echo "Usage: control lock"
+fi
