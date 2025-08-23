@@ -5,6 +5,7 @@ import socket
 import sys
 import os
 import argparse
+import qrcode
 
 from pyngrok import ngrok
 
@@ -20,8 +21,10 @@ def main():
         print("❌ Error: Path does not exist.")
         sys.exit(1)
 
+    is_file = os.path.isfile(share_path)
+
     # Change working directory
-    if os.path.isfile(share_path):
+    if is_file:
         shared_dir = os.path.dirname(share_path)
         shared_name = os.path.basename(share_path)
         os.chdir(shared_dir)
@@ -36,8 +39,7 @@ def main():
                 return super().do_GET()
 
         handler = SingleFileHandler
-
-    elif os.path.isdir(share_path):
+    else:
         os.chdir(share_path)
         handler = http.server.SimpleHTTPRequestHandler
 
@@ -56,14 +58,27 @@ def main():
 
     with ReusableTCPServer(("0.0.0.0", args.port), handler) as httpd:
         print(f"✅ Serving '{args.path}' at: http://{ip}:{args.port}/")
-        if os.path.isfile(share_path):
+        if is_file:
             print(f"📄 Direct link: http://{ip}:{args.port}/{shared_name}")
 
         # Start ngrok if requested
         if args.ngrok:
             print("🌐 Starting ngrok tunnel...")
             public_url = ngrok.connect(args.port)
-            print(f"🔗 Public URL: {public_url.public_url}")  # print clean string URL only
+            url = public_url.public_url
+            # If single file, append the filename
+            if is_file:
+                url = f"{url}/{shared_name}"
+            print(f"🔗 Public URL: {url}")
+
+            # Generate QR code
+            qr_path = os.path.expanduser("~/qr.png")
+            qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_H)
+            qr.add_data(url)
+            qr.make(fit=True)
+            img = qr.make_image(fill_color="black", back_color="white")
+            img.save(qr_path)
+            print(f"📱 QR code saved to: {qr_path}")
 
         try:
             httpd.serve_forever()

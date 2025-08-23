@@ -24,7 +24,7 @@ def get_local_ip():
 
 def send_telegram(ip):
     """Send a message via Telegram bot."""
-    message = f"My local IP is: {ip}"
+    message = f"ZT Arch Laptop: {ip}"
     try:
         requests.get(
             f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage",
