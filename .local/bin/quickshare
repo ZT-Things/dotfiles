@@ -5,8 +5,6 @@ import socket
 import sys
 import os
 import argparse
-import qrcode
-
 from pyngrok import ngrok
 
 def main():
@@ -23,7 +21,6 @@ def main():
 
     is_file = os.path.isfile(share_path)
 
-    # Change working directory
     if is_file:
         shared_dir = os.path.dirname(share_path)
         shared_name = os.path.basename(share_path)
@@ -43,7 +40,6 @@ def main():
         os.chdir(share_path)
         handler = http.server.SimpleHTTPRequestHandler
 
-    # Get local IP safely
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
@@ -52,7 +48,6 @@ def main():
     except Exception:
         ip = "localhost"
 
-    # Custom server class to allow immediate reuse
     class ReusableTCPServer(socketserver.TCPServer):
         allow_reuse_address = True
 
@@ -61,7 +56,6 @@ def main():
         if is_file:
             print(f"📄 Direct link: http://{ip}:{args.port}/{shared_name}")
 
-        # Start ngrok if requested
         if args.ngrok:
             print("🌐 Starting ngrok tunnel...")
             public_url = ngrok.connect(args.port)
@@ -71,14 +65,8 @@ def main():
                 url = f"{url}/{shared_name}"
             print(f"🔗 Public URL: {url}")
 
-            # Generate QR code
-            qr_path = os.path.expanduser("~/qr.png")
-            qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_H)
-            qr.add_data(url)
-            qr.make(fit=True)
-            img = qr.make_image(fill_color="black", back_color="white")
-            img.save(qr_path)
-            print(f"📱 QR code saved to: {qr_path}")
+            os.system(f'qr {url}')
+            print(f"\n📱 Scan this QR code with your phone: {url}\n")
 
         try:
             httpd.serve_forever()
@@ -87,4 +75,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

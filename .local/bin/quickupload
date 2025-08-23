@@ -1,0 +1,95 @@
+#!/usr/bin/env python3
+
+import os
+import socket
+import argparse
+from flask import Flask, request, render_template_string
+
+# Optional ngrok
+try:
+    from pyngrok import ngrok
+    HAS_NGROK = True
+except ImportError:
+    HAS_NGROK = False
+
+# Upload folder
+UPLOAD_FOLDER = os.path.expanduser('~/uploads')
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# Flask app
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+HTML_FORM = """
+<!doctype html>
+<title>Upload File</title>
+<h1>Upload File</h1>
+<form method=post enctype=multipart/form-data>
+  <input type=file name=file>
+  <input type=submit value=Upload>
+</form>
+"""
+
+@app.route('/', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        f = request.files['file']
+        if f.filename == '':
+            return 'No selected file'
+
+        # Increment filename if it already exists
+        base, ext = os.path.splitext(f.filename)
+        filename = f.filename
+        counter = 1
+        while os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
+            filename = f"{base}_{counter}{ext}"
+            counter += 1
+
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        f.save(save_path)
+        return f'File {filename} uploaded successfully to {save_path}'
+    return render_template_string(HTML_FORM)
+
+# Get local IP
+def get_local_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+    except Exception:
+        ip = "127.0.0.1"
+    return ip
+
+def print_qr(url):
+    # Uses system qr command
+    os.system(f'qr {url}')
+    print(f"\n📱 Scan this QR code with your phone: {url}\n")
+
+def main():
+    parser = argparse.ArgumentParser(description="Flask upload server with optional ngrok")
+    parser.add_argument("--port", type=int, default=5000, help="Port to serve on (default: 5000)")
+    parser.add_argument("--ngrok", action="store_true", help="Expose server via ngrok")
+    args = parser.parse_args()
+
+    if args.ngrok:
+        if not HAS_NGROK:
+            print("Missing pyngrok. Install with: pip install pyngrok")
+            return
+        print("🌐 Starting ngrok tunnel...")
+        public_url = ngrok.connect(args.port)
+        url = public_url.public_url
+        print(f"🔗 Public URL: {url}")
+    else:
+        ip = get_local_ip()
+        url = f"http://{ip}:{args.port}"
+        print(f"🌐 Local URL: {url}")
+
+    # Print QR code using system qr command
+    print_qr(url)
+
+    app.run(host="0.0.0.0", port=args.port)
+
+if __name__ == "__main__":
+    main()
+
