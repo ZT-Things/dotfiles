@@ -1,0 +1,52 @@
+#!/bin/bash
+# Usage: note quick|daily "Your note text"
+
+# Paths
+VAULT="$HOME/obsidian-vault"
+INBOX="$VAULT/00-Inbox"
+DAILY_FOLDER="$VAULT/05-Daily"
+TEMPLATE="$VAULT/04-Templates/daily.md"
+
+# Ensure folders exist
+mkdir -p "$INBOX"
+mkdir -p "$DAILY_FOLDER"
+
+# Today's date
+DATE=$(date +%Y-%m-%d)
+
+case "$1" in
+  quick)
+    shift
+    COUNT=$(ls "$INBOX" | grep "^$DATE" | wc -l)
+    FILE="$INBOX/$DATE-$((COUNT+1)).md"
+
+    if [ -z "$1" ]; then
+      nvim "$FILE"
+    else
+      echo "$*" > "$FILE"
+      echo "Quick note saved: $FILE"
+    fi
+    ;;
+
+  daily)
+    shift
+    FILE_DAILY="$DAILY_FOLDER/$DATE-daily.md"
+
+    # Copy template to 05-Daily, replacing {{DATE}} with actual date
+    if [ -f "$TEMPLATE" ]; then
+      sed "s/{{DATE}}/$DATE/g" "$TEMPLATE" > "$FILE_DAILY"
+      echo "Daily note created from template: $FILE_DAILY"
+    else
+      echo "Error: Template not found at $TEMPLATE"
+      exit 1
+    fi
+
+    # Open the 05-Daily version in Neovim
+    nvim "$FILE_DAILY"
+    ;;
+
+  *)
+    echo "Usage: note quick|daily \"Your note text\""
+    exit 1
+    ;;
+esac
