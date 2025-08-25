@@ -8,11 +8,11 @@ if [[ -r "$path/brightness" && -r "$path/max_brightness" ]]; then
 
     if [[ $max -gt 0 ]]; then
         percent=$(( 100 * current / max ))
-        echo "{\"text\": \" ${percent}%\", \"tooltip\": \"Brightness: $current / $max\"}"
+        echo "{\"text\": \"  ${percent}%\", \"tooltip\": \"Brightness: $current / $max\"}"
     else
-        echo "{\"text\": \" --\", \"tooltip\": \"Invalid max brightness\"}"
+        echo "{\"text\": \"  --\", \"tooltip\": \"Invalid max brightness\"}"
     fi
 else
-    echo "{\"text\": \" --\", \"tooltip\": \"No brightness info\"}"
+    echo "{\"text\": \"  --\", \"tooltip\": \"No brightness info\"}"
 fi
 

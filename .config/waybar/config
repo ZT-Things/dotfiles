@@ -2,9 +2,9 @@
     "layer": "top",
     "position": "top",
     "reload_style_on_change": true,
-    "modules-left": ["custom/archlogo","custom/notification", "clock", "cpu", "memory", "custom/gpu", "custom/pacman", "tray"],
+    "modules-left": ["custom/archlogo", "clock", "cpu", "memory", "custom/gpu", "tray"],
     "modules-center": ["hyprland/workspaces"],
-    "modules-right": ["pulseaudio","custom/brightness", "bluetooth", "network", "battery"],
+    "modules-right": ["pulseaudio","custom/brightness", "bluetooth", "network", "battery", "custom/pacman"],
 
     "hyprland/workspaces": {
         "format": "{icon}",
@@ -17,14 +17,8 @@
             "*": [1,2,3,4,5]
         }
     },
-    "custom/notification": {
-        "tooltip": false,
-        "format": "",
-        "on-click": "swaync-client -t -sw",
-        "escape": true
-    },
     "clock": {
-        "format": "{:%H:%M:%S} ",
+        "format": "{:%H:%M:%S %a, %d %b}",
         "interval": 1,
         "tooltip-format": "<tt>{calendar}</tt>",
         "calendar": {
@@ -38,7 +32,7 @@
         }
     },
     "network": {
-        "format-wifi": "",
+        "format-wifi": " ",
         "format-ethernet": "",
         "format-disconnected": "",
         "tooltip-format-disconnected": "Error",
@@ -79,7 +73,7 @@
         ]
     },
     "custom/pacman": {
-        "format": "󰅢 {}",
+        "format": "󰅢  {}",
         "interval": 30,
         "exec": "checkupdates | wc -l",
         "exec-if": "exit 0",
@@ -97,12 +91,12 @@
     },
     "cpu": {
         "interval": 1,
-        "format": " [{icon0}]",
+        "format": "  [{icon0}]",
         "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
         "tooltip": true
     },
     "memory": {
-        "format": " {used:0.1f}G/{total:0.1f}G",
+        "format": "  {used:0.1f}G/{total:0.1f}G",
         "tooltip": true
     },
     "custom/gpu": {
