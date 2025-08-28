@@ -1139,3 +1139,19 @@ systemctl --user restart ip_monitor.service
 ```
 
 ---
+
+## Installing wordlists
+
+Requires blackarch
+
+```bash
+sudo pacman -Ss seclists
+```
+
+Linking rockyou.txt for easier access
+
+```bash
+sudo ln -s /usr/share/seclists/Passwords/Leaked-Databases/rockyou.txt /usr/share/wordlists/rockyou.txt
+```
+
+---
