@@ -1155,3 +1155,38 @@ sudo ln -s /usr/share/seclists/Passwords/Leaked-Databases/rockyou.txt /usr/share
 ```
 
 ---
+
+## Setting up clasp
+
+```bash
+sudo pacman -S nodejs npm
+```
+
+```bash
+sudo npm install -g @google/clasp
+```
+
+```bash
+clasp login
+```
+
+### For neovim LSP
+
+```bash
+npm install --save-dev @types/google-apps-script
+```
+
+In `tsconfig.json`
+
+```ini
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "types": ["google-apps-script"]
+  },
+  "include": ["*.ts", "*.js"]
+}
+```
+
+---
