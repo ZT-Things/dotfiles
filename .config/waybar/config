@@ -15,7 +15,8 @@
         },
         "persistent-workspaces": {
             "*": [1,2,3,4,5]
-        }
+        },
+        "ignore-workspaces": ["10"]
     },
     "clock": {
         "format": "{:%H:%M:%S %a, %d %b}",

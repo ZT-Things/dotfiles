@@ -1,1 +1,0 @@
-xdotool windowunmap $(xdotool getactivewindow)
