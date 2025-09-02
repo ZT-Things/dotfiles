@@ -30,7 +30,7 @@ case "$1" in
 
   daily)
     shift
-    FILE_DAILY="$DAILY_FOLDER/$DATE-daily.md"
+    FILE_DAILY="$DAILY_FOLDER/$DATE.md"
 
     # Copy template to 05-Daily, replacing {{DATE}} with actual date
     if [ -f "$TEMPLATE" ]; then
