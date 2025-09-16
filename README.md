@@ -586,6 +586,10 @@ Run this to initialize:
 nvim .
 ```
 
+```bash
+git config --global core.editor "nvim"
+```
+
 ---
 
 ## Installing vencord
@@ -1188,5 +1192,4 @@ In `tsconfig.json`
   "include": ["*.ts", "*.js"]
 }
 ```
-
 ---
