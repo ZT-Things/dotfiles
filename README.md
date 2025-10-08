@@ -1193,3 +1193,13 @@ In `tsconfig.json`
 }
 ```
 ---
+
+## Playing .exe games
+
+If regular wine doesn't work then try launching it through heroic game launcher
+
+```bash
+yay -S heroic-games-launcher-bin
+```
+
+---
