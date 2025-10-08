@@ -2,9 +2,38 @@
 
 # control script for Hyprland
 
+HOTKEY_DIR=~/scripts/hotkeys
+
 if [ "$1" = "lock" ]; then
     nohup env XDG_RUNTIME_DIR=/run/user/1000 WAYLAND_DISPLAY=wayland-1 hyprlock >/dev/null 2>&1 &
     echo "Hyprland screen locked."
+
+elif [ "$1" = "hotkey" ]; then
+    KEY="$2"
+    SCRIPT="$3"
+
+    if [[ "$KEY" =~ ^[1-9]$ ]]; then
+        DEST="$HOTKEY_DIR/$KEY.sh"
+
+        if [ ! -f "$SCRIPT" ]; then
+            echo "Error: Script '$SCRIPT' not found."
+            exit 1
+        fi
+
+        mkdir -p "$HOTKEY_DIR"
+
+        cp "$SCRIPT" "$DEST"
+        chmod +x "$DEST"
+
+        echo "Assigned '$SCRIPT' to hotkey $KEY → $DEST"
+    else
+        echo "Error: Hotkey must be a number from 1 to 9."
+        exit 1
+    fi
+
 else
-    echo "Usage: control lock"
+    echo "Usage:"
+    echo "  control lock                 # Lock screen with hyprlock"
+    echo "  control hotkey <1-9> <file>  # Assign script to numpad hotkey"
+    exit 1
 fi
