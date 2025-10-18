@@ -4,7 +4,7 @@
     "reload_style_on_change": true,
     "modules-left": ["custom/archlogo", "clock", "cpu", "memory", "custom/gpu", "tray"],
     "modules-center": ["hyprland/workspaces"],
-    "modules-right": ["pulseaudio","custom/brightness", "bluetooth", "network", "battery", "custom/pacman"],
+    "modules-right": ["custom/dnd", "pulseaudio","custom/brightness", "bluetooth", "network", "battery", "custom/pacman"],
 
     "hyprland/workspaces": {
         "format": "{icon}",
@@ -17,6 +17,13 @@
             "*": [1,2,3,4,5]
         },
         "ignore-workspaces": ["10"]
+    },
+    "custom/dnd": {
+        "format": "{}",
+        "exec": "~/.config/waybar/scripts/do_not_disturb.sh",
+        "on-click": "~/.config/waybar/scripts/do_not_disturb.sh toggle",
+        "interval": 5,
+        "tooltip": false
     },
     "clock": {
         "format": "{:%H:%M:%S %a, %d %b}",

@@ -4,6 +4,8 @@
 
 HOTKEY_DIR=~/scripts/hotkeys
 
+DND_STATE_FILE="$HOME/.cache/dnd_state"
+
 if [ "$1" = "lock" ]; then
     nohup env XDG_RUNTIME_DIR=/run/user/1000 WAYLAND_DISPLAY=wayland-1 hyprlock >/dev/null 2>&1 &
     echo "Hyprland screen locked."
@@ -35,9 +37,11 @@ elif [ "$1" = "dnd" ]; then
 	if [ "$(makoctl mode)" == "do-not-disturb" ]; then
 	# DND OFF
 		makoctl mode -r do-not-disturb && echo "DND Mode OFF"
+        echo "off" > "$DND_STATE_FILE"
 	else
 	# DND ON
 		makoctl mode -s do-not-disturb && echo "DND Mode ON"
+        echo "on" > "$DND_STATE_FILE"
 	fi
 
 else

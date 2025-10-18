@@ -51,6 +51,7 @@ tooltip {
 #pulseaudio:hover,
 #custom-brightness:hover,
 #custom-gpu:hover,
+#custom-dnd:hover,
 #temperature:hover {
     transition: all 0.3s ease;
     color: @color9;
@@ -67,6 +68,7 @@ tooltip {
 #pulseaudio,
 #custom-brightness,
 #custom-gpu,
+#custom-dnd,
 #temperature {
     padding: 0 5px;
     transition: all 0.3s ease;
