@@ -31,9 +31,19 @@ elif [ "$1" = "hotkey" ]; then
         exit 1
     fi
 
+elif [ "$1" = "dnd" ]; then
+	if [ "$(makoctl mode)" == "do-not-disturb" ]; then
+	# DND OFF
+		makoctl mode -r do-not-disturb && echo "DND Mode OFF"
+	else
+	# DND ON
+		makoctl mode -s do-not-disturb && echo "DND Mode ON"
+	fi
+
 else
     echo "Usage:"
     echo "  control lock                 # Lock screen with hyprlock"
     echo "  control hotkey <1-9> <file>  # Assign script to numpad hotkey"
+    echo "  control dnd                  # Toggle do-not-disturb mode, uses mako"
     exit 1
 fi
