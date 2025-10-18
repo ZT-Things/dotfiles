@@ -1,10 +1,15 @@
 from obswebsocket import obsws, requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+OBS_PASSWORD = os.getenv("PASSWORD")
 
 host = "localhost"
 port = 4455
-password = "ckbLQGay6TE9j0UO"
 
-ws = obsws(host, port, password)
+ws = obsws(host, port, OBS_PASSWORD)
 ws.connect()
 ws.call(requests.StartReplayBuffer())  # if not already started
 ws.call(requests.SaveReplayBuffer())
