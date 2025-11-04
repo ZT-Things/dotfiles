@@ -109,11 +109,13 @@ export LIBVA_DRIVER_NAME=nvidia
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias vim="nvim"
-alias nano="nvim"
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 export PATH=$HOME/.local/bin:$PATH
 
 bindkey -s ^f "tmux-sessionizer\n"
 bindkey -s '^K' 'clear\n'
+
+# Best remap ever
+alias nano="vim"
 
 fastfetch

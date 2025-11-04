@@ -10,6 +10,9 @@ This repository contains my personal configuration files for Arch Linux.
 - Tmux Sessionizer (`.config/tmux-sessionizer`)
 - Zsh (`.zshrc`)
 - Gitignore (`.gitignore`)
+- OBS WebSocket
+- Custom wallpaper manager
+- Custom control command
 
 > **Note:** My Neovim configuration is managed in a separate repository.
 
@@ -1201,5 +1204,15 @@ If regular wine doesn't work then try launching it through heroic game launcher
 ```bash
 yay -S heroic-games-launcher-bin
 ```
+
+---
+
+## Change wine Java runtime version
+
+Install the .msi windows version for the version needed
+
+`https://www.azul.com/downloads/?package=jdk#zulu`
+
+`wine msiexec /i path/to/zulu8.88.0.19-ca-jre8.0.462-win_x64.msi`
 
 ---
