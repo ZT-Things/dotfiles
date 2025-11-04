@@ -1211,7 +1211,7 @@ yay -S heroic-games-launcher-bin
 
 Install the .msi windows version for the version needed
 
-`https://www.azul.com/downloads/?package=jdk#zulu`
+[Azul JRE Download](https://www.azul.com/downloads/?os=windows&package=jre#zulu)
 
 `wine msiexec /i path/to/zulu8.88.0.19-ca-jre8.0.462-win_x64.msi`
 
