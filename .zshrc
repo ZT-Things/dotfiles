@@ -114,6 +114,7 @@ export PATH=$HOME/.local/bin:$PATH
 
 bindkey -s ^f "tmux-sessionizer\n"
 bindkey -s '^K' 'clear\n'
+bindkey '^I' autosuggest-accept
 
 # Best remap ever
 alias nano="vim"
