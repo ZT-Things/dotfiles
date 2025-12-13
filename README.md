@@ -450,11 +450,12 @@ thunar wofi grim slurp swappy brightnessctl pamixer pavucontrol ly less tmux \
 mako neovim hyprshot hyprpicker
 ```
 
-Enable ly (login manager):
+Enable ly, you can change the 2 to any tty (1-6), but I recommend 2 (login manager):
 
 ```bash
-sudo systemctl enable ly.service
-sudo systemctl start ly
+sudo systemctl enable ly@tty2.service
+sudo systemctl enable getty@tty2.service
+sudo systemctl start ly@tty2
 ```
 
 ---
