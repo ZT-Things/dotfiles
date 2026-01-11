@@ -10,35 +10,33 @@ find_wallpaper() {
         candidate="$WALLPAPER_DIR/$relpath.$ext"
         if [[ -f "$candidate" ]]; then
             echo "$candidate"
-            return
+            return 0
         fi
     done
     return 1
 }
 
-# --list: List all wallpapers except ones named 'startup' (with or without subdirs)
+list_monitors() {
+    hyprctl monitors | awk '/Monitor/ {print $2}'
+}
+
+# --list: List all wallpapers except startup.*
 if [[ "$1" == "--list" ]]; then
-    while IFS= read -r -d '' file; do
-        relpath="${file#$WALLPAPER_DIR/}"
-        name="${relpath%.*}"
+    find "$WALLPAPER_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) |
+    while read -r file; do
+        rel="${file#$WALLPAPER_DIR/}"
+        name="${rel%.*}"
         [[ "$(basename "$name")" == "$STARTUP_NAME" ]] && continue
         echo "$name"
-    done < <(find "$WALLPAPER_DIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) -print0)
+    done
     exit 0
 fi
 
 # --set-startup <name>: Copy image to startup.*
 if [[ "$1" == "--set-startup" ]]; then
-    if [[ -z "$2" ]]; then
-        echo "Usage: wallpaper --set-startup <name>"
-        exit 1
-    fi
+    [[ -z "$2" ]] && { echo "Usage: wallpaper --set-startup <name>"; exit 1; }
 
-    src=$(find_wallpaper "$2")
-    if [[ -z "$src" ]]; then
-        echo "Wallpaper '$2' not found."
-        exit 1
-    fi
+    src=$(find_wallpaper "$2") || { echo "Wallpaper '$2' not found."; exit 1; }
 
     ext="${src##*.}"
     cp "$src" "$WALLPAPER_DIR/$STARTUP_NAME.$ext"
@@ -46,33 +44,23 @@ if [[ "$1" == "--set-startup" ]]; then
     exit 0
 fi
 
-# --reload: Restart hyprpaper and apply startup wallpaper silently
-if [[ "$1" == "--reload" ]]; then
-    pkill hyprpaper
-    nohup hyprpaper &> /dev/null &
-    bash ~/.config/hypr/paper_startup.sh &> /dev/null &
-    disown
-    exit 0
-fi
-
-# Set wallpaper manually
+# Set wallpaper immediately (modern hyprpaper way)
 if [[ -n "$1" ]]; then
-    wp=$(find_wallpaper "$1")
-    if [[ -z "$wp" ]]; then
-        echo "Wallpaper '$1' not found."
-        exit 1
-    fi
+    wp=$(find_wallpaper "$1") || { echo "Wallpaper '$1' not found."; exit 1; }
 
-    for monitor in $(hyprctl monitors | awk '/Monitor/ {print $2}'); do
+    # Preload once
+    hyprctl hyprpaper preload "$wp" >/dev/null
+
+    # Apply explicitly to all current monitors
+    for monitor in $(list_monitors); do
         hyprctl hyprpaper wallpaper "$monitor,$wp"
     done
+
     exit 0
 fi
 
 # Help
 echo "Usage:"
-echo "  wallpaper <name>                 Set wallpaper by name (no extension needed, supports subdirectories)"
-echo "  wallpaper --list                 List available wallpapers (excludes 'startup')"
-echo "  wallpaper --set-startup <name>  Set a wallpaper as the startup one"
-echo "  wallpaper --reload              Restart hyprpaper and apply startup wallpaper silently"
-
+echo "  wallpaper <name>                Set wallpaper immediately (IPC, no reload)"
+echo "  wallpaper --list                List available wallpapers (excludes 'startup')"
+echo "  wallpaper --set-startup <name> Set a wallpaper as the startup one"
