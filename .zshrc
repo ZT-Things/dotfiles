@@ -120,3 +120,4 @@ bindkey '^V' autosuggest-accept
 alias nano="vim"
 
 fastfetch
+export PATH=$PATH:~/.flutter-spy
