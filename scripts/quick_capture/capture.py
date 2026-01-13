@@ -16,9 +16,9 @@ ws.call(requests.SaveReplayBuffer())
 ws.disconnect()
 
 import subprocess
-subprocess.run([
-    "notify-send",  # or "mako-client" if you want it Wayland native
-    "-u", "normal",
-    "-t", "2000",
-    "Replay saved!"
-])
+# subprocess.run([
+#     "notify-send",  # or "mako-client" if you want it Wayland native
+#     "-u", "normal",
+#     "-t", "2000",
+#     "Replay saved!"
+# ])
