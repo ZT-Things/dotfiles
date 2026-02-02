@@ -395,7 +395,7 @@ nmcli connection up MyEnterpriseWiFi
 (If using AMD or Intel GPU, follow their respective guides.)
 
 ```bash
-sudo pacman -S nvidia nvidia-utils nvidia-settings egl-wayland libva-nvidia-driver
+sudo pacman -S nvidia-open nvidia-utils nvidia-settings egl-wayland libva-nvidia-driver
 ```
 
 Edit grub:
