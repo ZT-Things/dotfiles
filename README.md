@@ -978,6 +978,13 @@ rojo serve
 
 Then go into roblox studio, click rojo and connect to the server
 
+If something goes wrong later or after update, try this
+
+```bash
+rm -rf ~/.var/app/org.vinegarhq.Vinegar/cache/vinegar
+rm -rf ~/.var/app/org.vinegarhq.Vinegar/data/vinegar
+```
+
 ---
 
 ## Setting up music player
