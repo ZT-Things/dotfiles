@@ -1,52 +1,124 @@
 #!/bin/bash
-# Usage: note quick|daily "Your note text"
 
-# Paths
 VAULT="$HOME/obsidian-vault"
-INBOX="$VAULT/00-Inbox"
-DAILY_FOLDER="$VAULT/05-Daily"
-TEMPLATE="$VAULT/04-Templates/daily.md"
+EDITOR="nvim"
 
-# Ensure folders exist
-mkdir -p "$INBOX"
-mkdir -p "$DAILY_FOLDER"
+open_file() {
+    mkdir -p "$(dirname "$1")"
+    "$EDITOR" "$1"
+}
 
-# Today's date
-DATE=$(date +%Y-%m-%d)
+create_daily_if_missing() {
+    FILE="$1"
+    DATE_STRING="$2"
+
+    if [ ! -f "$FILE" ]; then
+        cat <<EOF > "$FILE"
+# $DATE_STRING
+
+## Today
+-
+
+## Working On
+-
+
+## Notes
+-
+
+## End of Day
+-
+EOF
+    fi
+}
+
+open_daily_by_date() {
+    TARGET_DATE="$1"
+
+    YEAR=$(date -d "$TARGET_DATE" +%Y)
+    MONTH_NAME=$(date -d "$TARGET_DATE" +%B)
+    DATE_STRING=$(date -d "$TARGET_DATE" +%F)
+
+    DIR="$VAULT/00-daily/$YEAR/$MONTH_NAME"
+    FILE="$DIR/$DATE_STRING.md"
+
+    mkdir -p "$DIR"
+    create_daily_if_missing "$FILE" "$DATE_STRING"
+    "$EDITOR" "$FILE"
+}
+
+# No arguments → Random.md
+if [ $# -eq 0 ]; then
+    open_file "$VAULT/Random.md"
+    exit 0
+fi
 
 case "$1" in
-  quick)
-    shift
-    COUNT=$(ls "$INBOX" | grep "^$DATE" | wc -l)
-    FILE="$INBOX/$DATE-$((COUNT+1)).md"
+    n)
+        [ -z "$2" ] && { echo "Usage: note n <name>"; exit 1; }
+        open_file "$VAULT/01-notes/$2.md"
+        ;;
+    p)
+        [ -z "$2" ] && { echo "Usage: note p <name>"; exit 1; }
+        open_file "$VAULT/02-projects/$2.md"
+        ;;
+    d)
+        open_daily_by_date "today"
+        ;;
+    dt)
+        open_daily_by_date "tomorrow"
+        ;;
+    dm)
+        if [ -z "$2" ]; then
+            echo "Usage: note dm <day-of-month>"
+            exit 1
+        fi
 
-    if [ -z "$1" ]; then
-      nvim "$FILE"
-    else
-      echo "$*" > "$FILE"
-      echo "Quick note saved: $FILE"
-    fi
-    ;;
+        YEAR=$(date +%Y)
+        MONTH=$(date +%m)
 
-  daily)
-    shift
-    FILE_DAILY="$DAILY_FOLDER/$DATE.md"
+        TARGET_DATE="$YEAR-$MONTH-$2"
 
-    # Copy template to 05-Daily, replacing {{DATE}} with actual date
-    if [ -f "$TEMPLATE" ]; then
-      sed "s/{{DATE}}/$DATE/g" "$TEMPLATE" > "$FILE_DAILY"
-      echo "Daily note created from template: $FILE_DAILY"
-    else
-      echo "Error: Template not found at $TEMPLATE"
-      exit 1
-    fi
+        # Validate date
+        if ! date -d "$TARGET_DATE" >/dev/null 2>&1; then
+            echo "Invalid date."
+            exit 1
+        fi
 
-    # Open the 05-Daily version in Neovim
-    nvim "$FILE_DAILY"
-    ;;
+        open_daily_by_date "$TARGET_DATE"
+        ;;
+    sync)
+        cd "$VAULT" || { echo "Vault not found."; exit 1; }
 
-  *)
-    echo "Usage: note quick|daily \"Your note text\""
-    exit 1
-    ;;
+        if [ ! -d ".git" ]; then
+            echo "Not a git repository."
+            exit 1
+        fi
+
+        # Add everything
+        git add -A
+
+        # Only commit if there are changes
+        if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+        fi
+
+        TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+        git commit -m "vault backup: $TIMESTAMP"
+
+        git push origin main
+
+        echo "Vault synced."
+        ;;
+    *)
+        echo "Unknown command."
+        echo "Usage:"
+        echo "  note           → Random.md"
+        echo "  note n <name>  → note file"
+        echo "  note p <name>  → project file"
+        echo "  note d         → today"
+        echo "  note dt        → tomorrow"
+        echo "  note dm <day>  → specific day this month"
+        exit 1
+        ;;
 esac
