@@ -5,6 +5,18 @@ EDITOR="nvim"
 SHORTCUT_FILE="$VAULT/shortcut.conf"
 TMUX_SESSION="vault"
 
+# -------------------------------------------------
+# Enforce vault as working directory (critical)
+# -------------------------------------------------
+cd "$VAULT" || {
+    echo "Vault directory not found."
+    exit 1
+}
+
+# -------------------------------------------------
+# Utilities
+# -------------------------------------------------
+
 open_file() {
     mkdir -p "$(dirname "$1")"
     "$EDITOR" "$1"
@@ -44,7 +56,7 @@ open_daily_by_date() {
     YEAR=$(date -d "$DATE_PARSED" +%Y)
     MONTH_NAME=$(date -d "$DATE_PARSED" +%B)
 
-    DIR="$VAULT/00-daily/$YEAR/$MONTH_NAME"
+    DIR="00-daily/$YEAR/$MONTH_NAME"
     FILE="$DIR/$DATE_PARSED.md"
 
     mkdir -p "$DIR"
@@ -52,9 +64,9 @@ open_daily_by_date() {
     "$EDITOR" "$FILE"
 }
 
-# -----------------------------
+# -------------------------------------------------
 # Shortcut resolver
-# -----------------------------
+# -------------------------------------------------
 
 resolve_shortcut() {
     KEY="$1"
@@ -66,17 +78,15 @@ resolve_shortcut() {
     grep -E "^${KEY}=" "$SHORTCUT_FILE" | head -n1 | cut -d'=' -f2-
 }
 
-# -----------------------------
+# -------------------------------------------------
 # Tmux launcher
-# -----------------------------
+# -------------------------------------------------
 
 launch_tmux() {
     TARGET_DIR="$1"
     SESSION_NAME="$2"
 
-    if [ ! -d "$TARGET_DIR" ]; then
-        mkdir -p "$TARGET_DIR"
-    fi
+    mkdir -p "$TARGET_DIR"
 
     if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
         tmux attach-session -t "$SESSION_NAME"
@@ -85,12 +95,12 @@ launch_tmux() {
     fi
 }
 
-# -----------------------------
+# -------------------------------------------------
 # note tmux
-# -----------------------------
+# -------------------------------------------------
 
 if [ "$1" == "tmux" ]; then
-    TARGET="$VAULT"
+    TARGET="."
     SESSION_NAME="vault"
 
     if [[ "$2" == -* ]]; then
@@ -98,7 +108,7 @@ if [ "$1" == "tmux" ]; then
         SHORT=$(resolve_shortcut "$KEY")
 
         if [ -n "$SHORT" ]; then
-            TARGET="$VAULT/$SHORT"
+            TARGET="$SHORT"
             SESSION_NAME="vault-$KEY"
         else
             echo "Shortcut '$KEY' not found."
@@ -110,16 +120,16 @@ if [ "$1" == "tmux" ]; then
     exit 0
 fi
 
-# -----------------------------
+# -------------------------------------------------
 # note -shortcut
-# -----------------------------
+# -------------------------------------------------
 
 if [[ "$1" == -* ]]; then
     KEY="${1#-}"
     TARGET=$(resolve_shortcut "$KEY")
 
     if [ -n "$TARGET" ]; then
-        open_file "$VAULT/$TARGET"
+        open_file "$TARGET"
         exit 0
     else
         echo "Shortcut '$KEY' not found."
@@ -127,27 +137,27 @@ if [[ "$1" == -* ]]; then
     fi
 fi
 
-# -----------------------------
+# -------------------------------------------------
 # Default behavior
-# -----------------------------
+# -------------------------------------------------
 
 if [ $# -eq 0 ]; then
-    open_file "$VAULT/Random.md"
+    open_file "Random.md"
     exit 0
 fi
 
-# -----------------------------
+# -------------------------------------------------
 # Main command router
-# -----------------------------
+# -------------------------------------------------
 
 case "$1" in
     n)
         [ -z "$2" ] && { echo "Usage: note n <name>"; exit 1; }
-        open_file "$VAULT/01-notes/$2.md"
+        open_file "01-notes/$2.md"
         ;;
     p)
         [ -z "$2" ] && { echo "Usage: note p <name>"; exit 1; }
-        open_file "$VAULT/02-projects/$2.md"
+        open_file "02-projects/$2.md"
         ;;
     d)
         open_daily_by_date "today"
@@ -165,8 +175,6 @@ case "$1" in
         open_daily_by_date "$TARGET_DATE"
         ;;
     sync)
-        cd "$VAULT" || { echo "Vault not found."; exit 1; }
-
         if [ ! -d ".git" ]; then
             echo "Not a git repository."
             exit 1
