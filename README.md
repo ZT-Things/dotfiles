@@ -1224,3 +1224,58 @@ Install the .msi windows version for the version needed
 `wine msiexec /i path/to/zulu8.88.0.19-ca-jre8.0.462-win_x64.msi`
 
 ---
+
+## Setting up smol-TTS
+
+The script should be in `~/scripts/smol-tts/tts.sh`
+
+This should be binded automatically in my `~/.config/hypr/hyprland.conf` if not, just bind it manually
+
+### Downloading TTS Model
+
+```bash
+yay -S piper-tts
+```
+
+```bash
+mkdir -p ~/.local/share/piper
+cd ~/.local/share/piper
+
+wget https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/medium/en_US-lessac-medium.onnx
+wget https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/medium/en_US-lessac-medium.onnx.json
+```
+
+### Setting up audio sink
+
+```bash
+mkdir -p ~/.config/systemd/user
+vim ~/.config/systemd/user/tts-virtual-mic.service
+```
+
+Paste this
+
+```
+[Unit]
+Description=PipeWire TTS Virtual Microphone
+After=pipewire.service wireplumber.service
+Requires=pipewire.service
+
+[Service]
+ExecStart=/usr/bin/pw-loopback \
+  --capture-props=node.name=tts_sink media.class=Audio/Sink node.description=TTS_Sink \
+  --playback-props=node.name=tts_virtual_mic media.class=Audio/Source node.description="TTS Virtual Mic"
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=default.target
+```
+
+Enable it
+
+```bash
+systemctl --user daemon-reload
+systemctl --user enable --now tts-virtual-mic.service
+```
+
+---

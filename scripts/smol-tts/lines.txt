@@ -1,0 +1,5 @@
+Introduction="Hello, it's nice to meet you but it's even better to meet me"
+Hello world="Hello world"
+Push Call="Push now, push now!"
+Reset Call="Reset, reset, reset!"
+BM Line="Why did you do that?"
