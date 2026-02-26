@@ -40,14 +40,7 @@ fi
 pkill -f "pw-play --target tts_sink" 2>/dev/null || true
 
 # --- Generate WAV with Piper ---
-echo "$TEXT" | \
-piper-tts \
-  -m "$MODEL" \
-  --volume 2.5 \
-  -f "$TMP_WAV"
-
-# --- Play into virtual sink ---
-pw-play --target tts_sink "$TMP_WAV"
+echo "$TEXT" > /tmp/piper_fifo
 
 # --- Optional cleanup ---
 rm -f "$TMP_WAV"
