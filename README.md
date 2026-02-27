@@ -1262,8 +1262,8 @@ Requires=pipewire.service
 
 [Service]
 ExecStart=/usr/bin/pw-loopback \
-  --capture-props=node.name=tts_sink media.class=Audio/Sink node.description=TTS_Sink \
-  --playback-props=node.name=tts_virtual_mic media.class=Audio/Source node.description="TTS Virtual Mic"
+  --capture-props='node.name=tts_sink media.class=Audio/Sink audio.position=[FL FR]' \
+  --playback-props='node.name=tts_virtual_mic node.description="TTS Virtual Mic" media.class=Audio/Source audio.position=[FL FR]'
 Restart=always
 RestartSec=2
 

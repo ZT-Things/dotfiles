@@ -13,6 +13,7 @@ KEEPER_PID=$!
 piper-tts \
   --model "$MODEL" \
   --cuda \
+  --length_scale 1.35 \
   --output-raw < "$FIFO" | \
 pw-cat \
   --playback \
@@ -20,6 +21,7 @@ pw-cat \
   --format s16 \
   --rate 22050 \
   --channels 1 \
+  --volume 1.7 \
   --target=tts_sink \
   -
 

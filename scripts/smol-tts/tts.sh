@@ -61,7 +61,7 @@ if [ "$ENGINE" = "fifo" ]; then
     echo "$TEXT" > /tmp/piper_fifo
 else
     # eSpeak direct
-    espeak "$TEXT" --stdout | pw-play --target tts_sink -
+    espeak -a 200 "$TEXT" --stdout | pw-play --target tts_sink -
 fi
 
 # --- Optional cleanup ---
