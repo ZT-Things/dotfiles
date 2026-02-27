@@ -388,6 +388,27 @@ sudo nmcli connection add type wifi \
 nmcli connection up MyEnterpriseWiFi
 ```
 
+### Using iwctl as backend with nmcli
+
+```bash
+sudo pacman -S iwd
+```
+
+```bash
+sudo vim /etc/NetworkManager/conf.d/force-active-scan.conf
+```
+
+Paste
+
+```
+[device]
+wifi.backend=iwd
+```
+
+```bash
+sudo systemctl restart NetworkManager
+```
+
 ---
 
 ## Installing NVIDIA Drivers
