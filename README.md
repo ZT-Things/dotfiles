@@ -1048,6 +1048,31 @@ You can cancel the installation if you only want the database
 sudo pacman -Syu
 ```
 
+### To fix blackarch acting up
+
+Disable the blackarch repo by commenting it out
+
+```bash
+sudo vim /etc/pacman.conf
+```
+
+```
+#[blackarch]
+#Server = https://mirror.blackarch.org/$repo/os/$arch
+```
+
+```
+sudo rm -rf /etc/pacman.d/gnupg
+sudo pacman-key --init
+sudo pacman-key --populate archlinux
+```
+
+```
+sudo pacman -Syy
+sudo pacman -S archlinux-keyring
+sudo pacman -Syu
+```
+
 ---
 
 ## Using custom quickshare script
