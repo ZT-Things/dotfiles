@@ -13,7 +13,7 @@ KEEPER_PID=$!
 piper-tts \
   --model "$MODEL" \
   --cuda \
-  --length_scale 1.35 \
+  --length_scale 1 \
   --output-raw < "$FIFO" | \
 pw-cat \
   --playback \
