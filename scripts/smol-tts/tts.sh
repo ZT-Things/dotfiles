@@ -5,14 +5,16 @@ set -euo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
 LINES_FILE="$DIR/lines.txt"
 ENGINE_FILE="$DIR/engine_mode"
+REPLACEMENT_FILE="$DIR/replacement.txt"
 TMP_WAV="/tmp/tts_output.wav"
 
 # --- Default engine ---
 [ -f "$ENGINE_FILE" ] || echo "fifo" > "$ENGINE_FILE"
 ENGINE="$(cat "$ENGINE_FILE")"
 
-# --- Sanity checks ---
+# --- Ensure files exist ---
 [ -f "$LINES_FILE" ] || { echo "lines.txt not found"; exit 1; }
+[ -f "$REPLACEMENT_FILE" ] || touch "$REPLACEMENT_FILE"
 
 # --- Select line ---
 CHOICE=$(
@@ -49,6 +51,26 @@ else
 fi
 
 [ -z "${TEXT:-}" ] && exit 0
+
+# --- Apply whole-word replacements safely ---
+if [ -s "$REPLACEMENT_FILE" ]; then
+    while IFS='=' read -r KEY VALUE; do
+        [ -z "${KEY:-}" ] && continue
+
+        # Strip surrounding quotes from VALUE
+        VALUE="${VALUE%\"}"
+        VALUE="${VALUE#\"}"
+
+        # Escape sed special chars in KEY and VALUE
+        ESC_KEY=$(printf '%s\n' "$KEY" | sed 's/[.[\*^$()+?{|\\]/\\&/g')
+        ESC_VALUE=$(printf '%s\n' "$VALUE" | sed 's/[&/\]/\\&/g')
+
+        # Replace whole words only
+        TEXT=$(printf '%s\n' "$TEXT" | \
+               sed -E "s/(^|[^[:alnum:]_])${ESC_KEY}([^[:alnum:]_]|$)/\1${ESC_VALUE}\2/g")
+
+    done < "$REPLACEMENT_FILE"
+fi
 
 # --- Stop previous playback ---
 pkill -f "pw-play --target tts_sink" 2>/dev/null || true
