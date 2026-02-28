@@ -1,1 +1,8 @@
 aggeloi="an ga loy"
+im="i am"
+ill="i will"
+rn="right now"
+brb="be right back"
+gtg="gotta go"
+irl="in real life"
+ive="i have"
