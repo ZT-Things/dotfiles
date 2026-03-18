@@ -1394,8 +1394,16 @@ sudo systemctl start keyd
 
 ## Setting up an IME
 
+If you don't want this go remove `exec-once = fcitx5` in `~/.config/hypr/hyprland.conf` and also the `fcitx` exports in `~/.zshrc` at the bottom
+
 ```bash
 sudo pacman -S fcitx5 fcitx5-mozc fcitx5-configtool
+```
+
+Then set things up in
+
+```bash
+fcitx5-configtool
 ```
 
 ---
