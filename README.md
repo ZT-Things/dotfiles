@@ -1389,3 +1389,13 @@ b = slash
 sudo systemctl enable keyd
 sudo systemctl start keyd
 ```
+
+---
+
+## Setting up an IME
+
+```bash
+sudo pacman -S fcitx5 fcitx5-mozc fcitx5-configtool
+```
+
+---
