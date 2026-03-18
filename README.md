@@ -1325,3 +1325,67 @@ systemctl --user enable --now tts-virtual-mic.service
 ```
 
 ---
+
+## One hand keybind
+
+This one is made so you don't have to use your right hand for shortcuts, really useful.
+
+Big example is navigation, ctrl+cap+s will help you navigate in discord blazingly fast instead of doing normal ctrl+k which require both hand in most use case
+
+```bash
+sudo pacman -S keyd
+```
+
+```bash
+sudo vim /etc/keyd/default.conf
+```
+
+Paste this in
+
+```
+[ids]
+*
+
+[main]
+capslock = layer(nav)
+
+[nav]
+
+# --- Special ---
+grave = backspace
+tab = enter
+
+# --- Row 1 ---
+q = u
+w = i
+e = o
+r = p
+t = y
+
+# --- Row 2 ---
+a = j
+s = k
+d = l
+f = semicolon
+g = h
+
+# --- Row 3 ---
+z = comma
+x = dot
+c = n
+v = m
+b = slash
+
+# --- Number row ---
+1 = 7
+2 = 8
+3 = 9
+4 = 0
+5 = minus
+6 = equal
+```
+
+```bash
+sudo systemctl enable keyd
+sudo systemctl start keyd
+```
