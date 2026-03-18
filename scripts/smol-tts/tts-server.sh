@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 FIFO="/tmp/piper_fifo"
-MODEL="$HOME/.local/share/piper/en_US-lessac-medium.onnx"
+MODEL="$HOME/.local/share/piper/en_US-hfc_male-medium.onnx"
 
 rm -f "$FIFO"
 mkfifo "$FIFO"
@@ -12,7 +12,6 @@ KEEPER_PID=$!
 
 piper-tts \
   --model "$MODEL" \
-  --cuda \
   --length_scale 1 \
   --output-raw < "$FIFO" | \
 pw-cat \
@@ -21,7 +20,7 @@ pw-cat \
   --format s16 \
   --rate 22050 \
   --channels 1 \
-  --volume 1.7 \
+  --volume 2 \
   --target=tts_sink \
   -
 
