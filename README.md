@@ -97,11 +97,11 @@ station wlan0 connect SSID_NAME
 
 ## Sync package database
 
-```ini
+```bash
 pacman -Sy
 ```
 
-```ini
+```bash
 pacman -S archlinux-keyring
 ```
 
@@ -591,7 +591,7 @@ source ~/.zshrc
 sudo pacman -S neovim
 ```
 
-## Setting up MY neovim config
+## Setting up my neovim config
 
 ```bash
 git clone https://github.com/ZT-Things/neovim-config
@@ -602,7 +602,7 @@ mv neovim-config ~/.config/nvim
 Installing go and node for lsp, or change this in the lsp config:
 
 ```bash
-sudo pacman -S go nodejs npm
+sudo pacman -S go nodejs npm fd
 ```
 
 Run this to initialize:
@@ -1407,3 +1407,24 @@ fcitx5-configtool
 ```
 
 ---
+
+## Neovim ComputerCraft LSP
+
+```bash
+mkdir -p ~/.local/share/nvim/lua-libs
+cd ~/.local/share/nvim/lua-libs
+git clone https://github.com/nvim-computercraft/lua-ls-cc-tweaked CC-Tweaked
+```
+
+Then have this in your project root
+
+`.luarc.json`
+
+```json
+{
+  "workspace.library": [
+    "~/.local/share/nvim/lua-libs/CC-Tweaked"
+  ],
+  "workspace.checkThirdParty": false
+}
+```
