@@ -64,6 +64,51 @@ open_daily_by_date() {
     "$EDITOR" "$FILE"
 }
 
+open_monthly() {
+    TARGET="$1"
+
+    if [ -z "$TARGET" ]; then
+        TARGET="today"
+    fi
+
+    if ! DATE_PARSED=$(date -d "$TARGET" +%F 2>/dev/null); then
+        echo "Invalid date."
+        exit 1
+    fi
+
+    YEAR=$(date -d "$DATE_PARSED" +%Y)
+    MONTH_NUM=$(date -d "$DATE_PARSED" +%m)
+    MONTH_NAME=$(date -d "$DATE_PARSED" +%B)
+
+    DIR="05-monthly/$YEAR"
+    FILE="$DIR/$MONTH_NUM-$MONTH_NAME.md"
+
+    mkdir -p "$DIR"
+
+    if [ ! -f "$FILE" ]; then
+        cat <<EOF > "$FILE"
+# $MONTH_NAME $YEAR
+
+## Goals
+-
+
+## Todo
+- [ ] Write something in todo list
+
+## Highlights
+-
+
+## Notes
+-
+
+## Review
+-
+EOF
+    fi
+
+    "$EDITOR" "$FILE"
+}
+
 # -------------------------------------------------
 # Shortcut resolver
 # -------------------------------------------------
@@ -164,6 +209,9 @@ case "$1" in
         ;;
     dt)
         open_daily_by_date "tomorrow"
+        ;;
+    m)
+        open_monthly "$2"
         ;;
     dm)
         [ -z "$2" ] && { echo "Usage: note dm <day-of-month>"; exit 1; }
