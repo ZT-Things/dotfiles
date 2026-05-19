@@ -468,7 +468,7 @@ systemctl --user enable --now pipewire pipewire-pulse wireplumber
 sudo pacman -S hyprland xdg-desktop-portal-hyprland xorg-server-xwayland \
 xdg-desktop-portal wl-clipboard qt5-wayland qt6-wayland waybar kitty \
 thunar wofi grim slurp swappy brightnessctl pamixer pavucontrol ly less tmux \
-mako neovim hyprshot hyprpicker
+mako neovim hyprshot hyprpicker hypridle
 ```
 
 Enable ly, you can change the 2 to any tty (1-6), but I recommend 2 (login manager):
