@@ -1428,3 +1428,34 @@ Then have this in your project root
   "workspace.checkThirdParty": false
 }
 ```
+
+## OBS Screen hiding
+
+Set up 2 scenes on OBS, named `SHARE` and `HIDE` and config it how you want
+
+```bash
+sudo pacman -S v4l2loopback-utils v4l2loopback-dkms
+```
+
+```bash
+sudo modprobe v4l2loopback
+```
+
+```bash
+cp /usr/share/applications/com.obsproject.Studio.desktop ~/.local/share/applications/
+vim ~/.local/share/applications/com.obsproject.Studio.desktop
+```
+
+Change `Exec` to
+
+```ini
+Exec=env QT_QPA_PLATFORM=xcb obs
+```
+
+To use
+
+1. Go to OBS
+2. Right click preview
+3. Open Preview Projector
+4. Click display
+5. Share the projector
