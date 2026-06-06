@@ -486,7 +486,7 @@ sudo systemctl start ly@tty2
 ```bash
 sudo pacman -S hyprlock hyprpaper hyprshot flatpak feh ffmpeg calcurse
 sudo pacman -S ttf-dejavu ttf-liberation noto-fonts noto-fonts-emoji noto-fonts-cjk ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common
-sudo pacman -S ripgrep fzf
+sudo pacman -S ripgrep fzf tumbler ffmpegthumbnailer poppler-glib
 ```
 
 ---
@@ -783,7 +783,7 @@ sudo pacman -Sy
 ### Step 3: Install Steam and dependencies
 
 ```bash
-sudo pacman -S steam steam-native-runtime lib32-nvidia-utils lib32-mesa lib32-vulkan-radeon lib32-vulkan-intel
+sudo pacman -S steam lib32-nvidia-utils lib32-mesa lib32-vulkan-radeon lib32-vulkan-intel
 ```
 
 If you use Nvidia GPU, `lib32-nvidia-utils` is needed. For AMD or Intel, install appropriate `lib32` Vulkan packages.
@@ -803,6 +803,8 @@ Steam will update itself on first launch.
 ---
 
 ## Discord Screen Share on Arch Linux (Hyprland + Vesktop)
+
+NOTE: This doesn't seem to be necessary anymore.
 
 ---
 
@@ -1287,8 +1289,8 @@ yay -S piper-tts
 mkdir -p ~/.local/share/piper
 cd ~/.local/share/piper
 
-wget https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/medium/en_US-lessac-medium.onnx
-wget https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/medium/en_US-lessac-medium.onnx.json
+wget https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/hfc_male/medium/en_US-hfc_male-medium.onnx
+wget https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/hfc_male/medium/en_US-hfc_male-medium.onnx.json
 ```
 
 ### Setting up audio sink
@@ -1429,6 +1431,8 @@ Then have this in your project root
 }
 ```
 
+---
+
 ## OBS Screen hiding
 
 Set up 2 scenes on OBS, named `SHARE` and `HIDE` and config it how you want
@@ -1459,3 +1463,21 @@ To use
 3. Open Preview Projector
 4. Click display
 5. Share the projector
+
+---
+
+## Dark Theme
+
+```bash
+sudo pacman -S nwg-look qt6ct kvantum kvantum-qt5
+```
+
+```bash
+sudo pacman -S adw-gtk-theme
+```
+
+Select the `Prefer Dark` in the `Color Scheme` option
+
+```bash
+nwg-look
+```
