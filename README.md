@@ -531,6 +531,7 @@ Set this to true in `about:config`
 Set this to false
 
 `zen.view.show-newtab-button-top`
+`zen.view.enable-loading-indicator`
 
 ---
 
