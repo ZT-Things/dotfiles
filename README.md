@@ -648,7 +648,7 @@ Exec=vesktop %U
 Change it to:
 
 ```ini
-Exec=vesktop --enable-features=WaylandWindowDecorations --ozone-platform-hint=auto %U
+Exec=env OZONE_PLATFORM=x11 ENABLE_WAYLAND_WINDOW_DECORATIONS=1 vesktop %U
 ```
 
 Then save and exit.
