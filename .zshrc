@@ -125,3 +125,5 @@ export PATH=$PATH:~/.flutter-spy
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
+
+alias ssh="kitty +kitten ssh"
