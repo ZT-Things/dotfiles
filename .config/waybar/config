@@ -8,13 +8,14 @@
 
     "hyprland/workspaces": {
         "format": "{icon}",
+        "tooltip": false,
         "format-icons": {
             "active": "",
             "default": "",
             "empty": ""
         },
         "persistent-workspaces": {
-            "*": [1,2,3,4,5]
+            "*": [1, 2, 3, 4, 5]
         },
         "ignore-workspaces": ["10"]
     },
